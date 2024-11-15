@@ -1,0 +1,109 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 1%;
+    background: rgba(14, 56, 160, 0.9);
+    color: white;
+  }
+  
+  .navbar-left {
+    display: flex;
+    gap: 1rem; /* Razmak između linkova */
+  }
+  
+  .navbar-left a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  
+  
+  .navbar-left .active {
+    color: #ffd813; /* Početna boja linkova */
+    text-decoration: underline; /* Uklanjanje donje linije */
+    transition: color 0.3s, transform 0.2s; /* Animacija promena boje i veličine */
+    transform: scale(1.1); /* Blaga animacija povećanja */
+  }
+  
+  .navbar-left a:hover {
+    color: #ffd813; /* Žuta boja kada se pređe mišem */
+    transform: scale(1.1); /* Blaga animacija povećanja */
+    text-decoration: underline;
+  }
+  
+  .navbar-right {
+    display: flex;
+  }
+  
+  .navbar-right button {
+    background-color: #ffd813;  
+    border: none;
+    color: rgb(0, 0, 0);
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    border-radius: 16px; 
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .navbar-right button:hover {
+    background-color: #ff1111; 
+    transform: scale(1.05);
+    color: #ffffff;
+  }
+  
+  
+  
+  /* Dropdown meni */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-button {
+  background-color: #1877f2;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.dropdown-button:hover {
+  background-color: #165eab;
+}
+
+/* Padajući sadržaj */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  color: black;
+  min-width: 100px;
+  max-width: fit-content;
+  padding: 10px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 5px 10px;
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+/* Prikazivanje padajućeg menija */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+  
+  
