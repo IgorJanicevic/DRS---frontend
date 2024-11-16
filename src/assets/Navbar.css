@@ -3,14 +3,14 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
-    margin-bottom: 1%;
-    background: rgba(14, 56, 160, 0.9);
+    background: rgba(14, 55, 160, 0);
     color: white;
   }
   
   .navbar-left {
     display: flex;
     gap: 1rem; /* Razmak između linkova */
+
   }
   
   .navbar-left a {
@@ -55,7 +55,6 @@
   
   
   
-  /* Dropdown meni */
 .dropdown {
   position: relative;
 }
@@ -69,11 +68,21 @@
   border-radius: 5px;
 }
 
+.dropdown-button-profile{
+  background-color: #1877f2;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  height: 18px;
+  width: 22px;
+  border-radius: 100px;
+}
+
 .dropdown-button:hover {
   background-color: #165eab;
 }
 
-/* Padajući sadržaj */
 .dropdown-content {
   display: none;
   position: absolute;

@@ -37,7 +37,9 @@ export const CreateUserPage = () => {
   };
 
   return (
+    <>
     <div className="register-container">
+        
         <div className="text-overlay">
             <h1>Start a wave of change!</h1>
             <p>With just one click, you create a new profile,<br/> and maybe that user will become part of the next big story on our network.</p>
@@ -163,6 +165,7 @@ export const CreateUserPage = () => {
           <button type="button" onClick={register} className="register-button">Register</button>
       </div>
     </div>
+    </>
   );
 };
 

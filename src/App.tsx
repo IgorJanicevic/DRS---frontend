@@ -5,6 +5,7 @@ import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { HomePage } from './pages/HomePage';
 import { CreateUserPage } from './pages/CreateUserPage';
+import { ProfilePage } from './pages/ProfilePage';
 
 const router= createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router= createBrowserRouter([
   {
     path:'/create',
     element:<CreateUserPage/>
+  },
+  {
+    path:'/profile',
+    element:<ProfilePage/>
   }
 ])
 

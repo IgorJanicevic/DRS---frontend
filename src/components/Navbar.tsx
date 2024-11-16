@@ -2,8 +2,9 @@ import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { NavLink, useNavigate } from 'react-router-dom';
 import "../assets/Navbar.css";
 
-interface CustomJwtPayload extends JwtPayload {
-    role: string; 
+export interface CustomJwtPayload extends JwtPayload {
+    role: string;
+    sub: string;
 }
 
 export const Navbar = () => {
@@ -71,11 +72,17 @@ export const Navbar = () => {
                 </div>
                 </div>
             )}
+
+            
             <div className='dropdown'>
-                <div className='dropdown-button'></div>
+                <div className='dropdown-button-profile'>👤</div>
+                <div className='dropdown-content'>
+                    <NavLink to="/profile" onClick={handleLinkClick}>Profile</NavLink>
+                    {token !== null && <button onClick={handleLogout}>Logout</button>}
+                    {token === null && <button onClick={handleLogout}>Login</button>}
+                </div>
             </div>
-            {token !== null && <button onClick={handleLogout}>Logout</button>}
-            {token === null && <button onClick={handleLogout}>Login</button>}
+            
             </div>
 
         </nav>

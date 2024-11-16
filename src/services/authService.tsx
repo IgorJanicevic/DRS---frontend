@@ -34,3 +34,41 @@ export const registerUser= async(user:UserRegister | undefined):Promise<string>=
     const data = await response.json();
     return data.token;
 }
+
+
+export const getUserProfile= async(id:string):Promise<UserRegister>=>{
+    const token = localStorage.getItem('token');
+    const response = await fetch(`http://localhost:5000/user/${id}`,{
+        method:'GET',
+        headers:{
+            'Authorization': token + '',
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if(!response.ok){
+        throw new Error("Error with profile");
+    }
+
+    return await response.json();
+}
+
+export const updateUserProfile= async(user_id:string,userData:UserRegister):Promise<string>=>{
+    const token = localStorage.getItem('token');
+    const response = await fetch(`http://localhost:5000/user/${user_id}`,
+        {
+            method:'PUT',
+            headers:{
+                'Authorization':token+'',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userData)
+        }
+    );
+    
+    if(!response.ok){
+        throw new Error('Error with updating user.');
+    }
+
+    return response.json();
+}
