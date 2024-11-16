@@ -18,7 +18,7 @@ export const loginUser = async(username:string,password:string):Promise<string>=
     return data.token;
 }
 
-export const registerUser= async(user:UserRegister):Promise<string>=>{
+export const registerUser= async(user:UserRegister | undefined):Promise<string>=>{
     const response = await fetch('http://localhost:5000/user/register',{
         method:'POST',
         headers:{

@@ -1,0 +1,89 @@
+
+.register-container {
+    background-image: url(https://cdn.leonardo.ai/users/a1057d29-236f-4cfa-b60c-66c4061fd2fd/generations/a166581c-1766-45ce-99c3-252cb8a49a48/Leonardo_Phoenix_a_dramatic_highcontrast_cinematic_photograph_1.jpg);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    height: auto;
+  }
+  
+  .register-right {
+    background-color: rgba(255, 255, 255, 1);
+    padding: 100px 160px;
+    border-radius: 40px 0px 0px 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.251);
+    max-width: 400px;
+    width: 100%;
+    
+    height: 71.2vh;
+  }
+
+  .register-form{
+    display: inline-flex;
+    
+    width: 100%;
+    gap:110px;
+  }
+  
+
+  .register-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+    margin-left: 28%;
+  }
+  
+  .register-subtitle {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 20px;
+    margin-left: 40%;
+    margin-bottom: 6%;
+  }
+  
+  .register-input-group {
+    margin-bottom: 15px;
+  }
+  
+  .register-label {
+    font-size: 0.9rem;
+    color: #333;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .register-input {
+    width: 150%;
+    padding: 10px;
+    border: 0px;
+    background-color: rgb(212, 210, 210);
+    border-radius: 7px;
+    font-size: 1rem;
+  }
+  
+  /* Dugme za registraciju */
+  .register-button {
+    width: 80%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-left: 25%;
+    margin-top: 4%;
+    transition: background-color 0.3s;
+  }
+  
+  .register-button:hover {
+    
+    background-color: #0056b3;
+  }
+
+  .register-link{
+    margin-left: 5%;
+    font-size: small;
+    color: gray;
+  }
