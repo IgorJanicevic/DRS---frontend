@@ -7,4 +7,11 @@ export interface Post {
     status: string;
     image_url?: string;
   }
+
+export interface PostCreate{
+  user_id:string;
+  description: string | '',
+  image_url: string | undefined,
+  type:string
+}
   

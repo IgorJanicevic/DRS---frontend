@@ -16,7 +16,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
         </span>
       </div>
 
-      {post.image_url && (
+      {post.image_url!="" && (
         <div className="post-image">
           <img src={post.image_url} alt="Post" />
         </div>

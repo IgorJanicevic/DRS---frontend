@@ -1,43 +1,60 @@
 import React, { useState } from "react";
+import { createPost } from "../services/postService";
 import "../assets/CreatePost.css";
+import { jwtDecode } from "jwt-decode";
+import { CustomJwtPayload } from "./Navbar";
+import { useNavigate } from "react-router-dom";
 
 export const CreatePost = () => {
-  const [postContent, setPostContent] = useState<string>("");
+  const navigate = useNavigate();
+  const [description, setDescription] = useState<string>("");
+  const [type, setType] = useState<string>("General");
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isPosting, setIsPosting] = useState<boolean>(false);
 
   const handlePost = async () => {
-    if (!postContent.trim() && !selectedImage) {
-      alert("Post content or an image is required!");
+    if (!description.trim() && !selectedImage) {
+      alert("Description or an image is required!");
       return;
     }
 
     setIsPosting(true);
 
     try {
-      const formData = new FormData();
-      formData.append("content", postContent);
-      if (selectedImage) {
-        formData.append("image", selectedImage);
-      }
+        const token = localStorage.getItem('token'); 
+        let user_id='';
+        if (token) {
+            const decodedToken = jwtDecode<CustomJwtPayload>(token); 
+            user_id = decodedToken.sub;
+        }else{
+            navigate('/login');
+            return;
+        }
 
-      const response = await fetch("http://localhost:5000/posts", {
-        method: "POST",
-        body: formData, // Slanje formData za tekst i fajl
+        let imageUrl = '';
+
+        if (selectedImage) {
+          imageUrl = await convertToBase64(selectedImage);
+        }
+
+       await createPost({
+        "user_id": user_id,
+        "description": description,
+        "image_url": imageUrl,
+        "type": type
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to create post.");
-      }
-
       alert("Post created successfully!");
-      setPostContent("");
+      setDescription("");
+      setType("General");
       setSelectedImage(null);
       setPreviewImage(null);
     } catch (error) {
       console.error("Error creating post:", error);
-      alert("Something went wrong. Please try again.");
+      if (error instanceof Error) {
+        alert(error.message);
+      }
     } finally {
       setIsPosting(false);
     }
@@ -51,6 +68,18 @@ export const CreatePost = () => {
     }
   };
 
+  // Funkcija za konverziju slike u Base64 string
+  const convertToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        resolve(reader.result as string); // Vraća Base64 string
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(file); // Konvertuje u Base64
+    });
+  };
+
   return (
     <div className="create-post-container">
       <div className="post-header">
@@ -59,10 +88,23 @@ export const CreatePost = () => {
       <textarea
         className="post-input"
         placeholder="What's on your mind?"
-        value={postContent}
-        onChange={(e) => setPostContent(e.target.value)}
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
         disabled={isPosting}
       />
+      <div className="post-type-select">
+        <label htmlFor="type">Type:</label>
+        <select
+          id="type"
+          value={type}
+          onChange={(e) => setType(e.target.value)}
+          disabled={isPosting}
+        >
+          <option value="General">General</option>
+          <option value="Announcement">Announcement</option>
+          <option value="Event">Event</option>
+        </select>
+      </div>
       <div className="image-upload">
         <input
           type="file"

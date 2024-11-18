@@ -30,8 +30,11 @@ export const HomePage: React.FC = () => {
     }, []);    
 
     const loadPosts = async (user_id:string) =>{
+      try{
             setPosts( await GetUserPosts(user_id))
             //setPosts( await GetFriendsPosts(user_id))
+        }catch(error){
+        }
     }
 
 
@@ -47,10 +50,14 @@ export const HomePage: React.FC = () => {
         </div>
 
         <div className="main-content">
-          <CreatePost/>
-          {posts.map((post) => (
-            <PostCard key={post._id} post={post} />
-          ))}
+          <CreatePost />
+          {posts.length > 0 ? (
+            posts.map((post) => (
+              <PostCard key={post._id} post={post} />
+            ))
+          ) : (
+            <h3>Find new friends!</h3> 
+          )}
         </div>
 
         <div className="right-side">

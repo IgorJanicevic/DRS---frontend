@@ -36,8 +36,17 @@ function App() {
         const decodedToken = jwtDecode<CustomJwtPayload>(token); 
         const exp = decodedToken.exp; 
 
-        if(exp){
-          localStorage.clear()
+        if (exp) {
+          const expirationTime = exp * 1000;
+    
+          const currentTime = Date.now();
+    
+          if (currentTime > expirationTime) {
+            localStorage.clear();
+            console.log("Token has expired. LocalStorage cleared.");
+          } else {
+            console.log("Token is still valid.");
+          }
         }
     }
   return (<>
