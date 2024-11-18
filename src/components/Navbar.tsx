@@ -18,12 +18,9 @@ export const Navbar = () => {
         userRole = decodedToken.role; 
     }
 
-    console.log(userRole); 
-
     const handleLogout = () => {
         localStorage.removeItem('token');
         navigate('/login');
-        console.log("Logout clicked");
     };
 
     const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {

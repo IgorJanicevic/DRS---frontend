@@ -5,7 +5,6 @@ import "../assets/RegisterPage.css"
 
 
 export const CreateUserPage = () => {
-  const [userData, setUserData] = useState<UserRegister>();
   const [username, setUsername] = useState('');
   const [first_name, setFirstName] = useState('');
   const [last_name, setLastName] = useState('');
@@ -18,7 +17,7 @@ export const CreateUserPage = () => {
 
   const register = async () => {
     try {
-      setUserData({
+      const user: UserRegister = {
         username,
         first_name,
         last_name,
@@ -28,13 +27,36 @@ export const CreateUserPage = () => {
         address,
         city,
         country,
-      });
-      const response = await registerUser(userData!);
+      };
+  
+      const response = await registerUser(user);
+  
       alert('Registration successful!');
+  
+      setUsername('');
+      setFirstName('');
+      setLastName('');
+      setEmail('');
+      setMobile('');
+      setPassword('');
+      setAddress('');
+      setCity('');
+      setCountry('');
     } catch (error) {
-      console.log("Error with registration user");
+      console.error("Error with registration:", error);
+      
+      if (error instanceof Error) {
+        if (error.message.includes("Email")) {
+          setEmail('');
+        }
+  
+        if (error.message.includes("Username")) {
+          setUsername('');
+        }
+      } 
     }
   };
+  
 
   return (
     <>

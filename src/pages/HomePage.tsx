@@ -6,6 +6,7 @@ import { GetUserPosts } from "../services/postService";
 import { jwtDecode } from "jwt-decode";
 import { CustomJwtPayload } from "../components/Navbar";
 import { Post } from "../models/postModel";
+import { CreatePost } from "../components/CreatePost";
 
 
 export const HomePage: React.FC = () => {
@@ -46,6 +47,7 @@ export const HomePage: React.FC = () => {
         </div>
 
         <div className="main-content">
+          <CreatePost/>
           {posts.map((post) => (
             <PostCard key={post._id} post={post} />
           ))}

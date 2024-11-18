@@ -11,6 +11,7 @@ export const loginUser = async(username:string,password:string):Promise<string>=
             password:password
         }),
     });
+    
     if(!response.ok){
         throw new Error('Failed to log in');
     }
@@ -28,7 +29,9 @@ export const registerUser= async(user:UserRegister | undefined):Promise<string>=
     });
 
     if(!response.ok){
-        throw new Error("Failed to register.");
+        const errorData = await response.json();
+        alert(errorData.message);
+        throw new Error(errorData.message);
     }
 
     const data = await response.json();
