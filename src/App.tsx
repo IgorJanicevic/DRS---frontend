@@ -2,7 +2,6 @@ import './App.css';
 import "./index.css";
 import { createBrowserRouter,RouterProvider } from 'react-router-dom';
 import { LoginPage } from './pages/LoginPage';
-import { RegisterPage } from './pages/RegisterPage';
 import { HomePage } from './pages/HomePage';
 import { CreateUserPage } from './pages/CreateUserPage';
 import { ProfilePage } from './pages/ProfilePage';
@@ -11,10 +10,6 @@ const router= createBrowserRouter([
   {
     path:'/login',
     element:<LoginPage/>
-  },
-  {
-    path: '/register',
-    element:<RegisterPage/>
   },
   {
     path: '/',

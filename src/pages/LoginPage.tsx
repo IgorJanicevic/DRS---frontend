@@ -72,7 +72,7 @@ export const LoginPage = () => {
           </div>
           <button type="button" onClick={login} className="login-button">Login</button>
           <p className="login-register-link">
-            Don't have an account? <a href="/register" className="login-link">Register here</a>
+            Don't have an account? <a href="/create" className="login-link">Register here</a>
           </p>
         </form>
       </div>

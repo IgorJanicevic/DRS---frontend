@@ -1,0 +1,33 @@
+.home-page {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .home-layout {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .left-side, .right-side {
+    width: 25%;
+    padding: 20px;
+    background-color: #8d8484dd;
+    border-radius: 8px;
+  }
+  
+  .main-content {
+    width: 50%;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .post-card {
+    margin-bottom: 50px;
+    width: 100%;
+    margin-left: 5%;
+  }
+  
+  
