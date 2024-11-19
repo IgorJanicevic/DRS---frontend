@@ -27,6 +27,7 @@ export const CreatePost = () => {
         if (token) {
             const decodedToken = jwtDecode<CustomJwtPayload>(token); 
             user_id = decodedToken.sub;
+
         }else{
             navigate('/login');
             return;
