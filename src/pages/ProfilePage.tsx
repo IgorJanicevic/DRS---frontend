@@ -19,7 +19,6 @@ export const ProfilePage = () => {
             const decodedToken = jwtDecode<CustomJwtPayload>(token); 
             setUserId(decodedToken.sub); 
             user_id= decodedToken.sub;
-            alert(user_id)
         }
         if (user_id) {
             fetchUserProfile(user_id);

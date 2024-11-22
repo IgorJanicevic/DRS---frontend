@@ -7,6 +7,10 @@ import { CreateUserPage } from './pages/CreateUserPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { jwtDecode } from 'jwt-decode';
 import { CustomJwtPayload } from './components/Navbar';
+import { AdminHomePage } from './pages/AdminHomePage';
+import { AdminPostPage } from './pages/AdminPostsPage';
+import { AdminBlockedUserPage } from './pages/AdminBlockedUserPage';
+import { AdminProfilePage } from './pages/AdminProfilePage';
 
 
 const router= createBrowserRouter([
@@ -25,6 +29,22 @@ const router= createBrowserRouter([
   {
     path:'/profile',
     element:<ProfilePage/>
+  },
+  {
+    path:'/admin',
+    element:<AdminHomePage/>
+  },
+  {
+    path:'/admin-posts',
+    element:<AdminPostPage/>
+  },
+  {
+    path:'/admin-blocked-users',
+    element:<AdminBlockedUserPage/>
+  },
+  {
+    path:'/admin-profile',
+    element:<AdminProfilePage/>
   }
 ])
 

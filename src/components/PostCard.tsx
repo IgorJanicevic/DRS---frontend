@@ -25,9 +25,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
       <div className="post-description">{post.description}</div>
 
       <div className="post-footer">
-        <span className={`post-status ${post.status.toLowerCase()}`}>
-          {post.status}
-        </span>
+
         <span className="post-type">{post.type}</span>
       </div>
     </div>

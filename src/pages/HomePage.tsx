@@ -41,7 +41,7 @@ export const HomePage: React.FC = () => {
 
 
 
-  return (
+  return (<>
     <div className="home-page">
       <Navbar />
       <div className="home-layout">
@@ -66,5 +66,6 @@ export const HomePage: React.FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };

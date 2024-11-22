@@ -31,10 +31,11 @@ export const Navbar = () => {
         }
     };
 
-    return (
+    return (<>
+    
         <nav className="navbar">
             <div className="navbar-left">
-                <NavLink to="/" onClick={handleLinkClick} className={({ isActive }) => (isActive ? 'active' : '')}>Logo</NavLink>
+                <NavLink to="/info" onClick={handleLinkClick}>Logo</NavLink>
                 <input type='text' placeholder='Search'></input>
                 <NavLink to="/" onClick={handleLinkClick} className={({ isActive }) => (isActive ? 'active' : '')}>Home</NavLink>
                 <NavLink to="/friends" onClick={handleLinkClick} className={({ isActive }) => (isActive ? 'active' : '')}>Friends</NavLink>
@@ -83,5 +84,6 @@ export const Navbar = () => {
             </div>
 
         </nav>
+        </>
     );
 };
