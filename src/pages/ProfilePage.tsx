@@ -3,7 +3,8 @@ import { UserRegister } from "../models/userModel";
 import { getUserProfile } from "../services/authService";
 import { updateUserProfile } from "../services/authService";  // Pretpostavljam da postoji funkcija za ažuriranje profila
 import { jwtDecode } from "jwt-decode";
-import { CustomJwtPayload, Navbar } from "../components/Navbar";
+import { Navbar } from "../components/Navbar";
+import { CustomJwtPayload } from "../components/ProtectRoutes";
 
 export const ProfilePage = () => {
     const [userProfile, setUserProfile] = useState<UserRegister | null>(null);

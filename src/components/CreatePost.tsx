@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { createPost } from "../services/postService";
 import "../assets/CreatePost.css";
 import { jwtDecode } from "jwt-decode";
-import { CustomJwtPayload } from "./Navbar";
 import { useNavigate } from "react-router-dom";
+import { CustomJwtPayload } from "./ProtectRoutes";
 
 export const CreatePost = () => {
   const navigate = useNavigate();
@@ -84,7 +84,7 @@ export const CreatePost = () => {
   return (
     <div className="create-post-container">
       <div className="post-header">
-        <h2>Create a Post</h2>
+        <h4 style={{marginLeft:"44%"}}>New post</h4>
       </div>
       <textarea
         className="post-input"
@@ -94,7 +94,7 @@ export const CreatePost = () => {
         disabled={isPosting}
       />
       <div className="post-type-select">
-        <label htmlFor="type">Type:</label>
+        {/* <label htmlFor="type">Type:</label>
         <select
           id="type"
           value={type}
@@ -104,7 +104,7 @@ export const CreatePost = () => {
           <option value="General">General</option>
           <option value="Announcement">Announcement</option>
           <option value="Event">Event</option>
-        </select>
+        </select> */}
       </div>
       <div className="image-upload">
         <input

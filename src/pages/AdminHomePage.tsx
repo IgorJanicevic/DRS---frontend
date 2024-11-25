@@ -3,6 +3,8 @@ import { AdminNavbar } from "../components/AdminNavbar";
 import { AdminProfilePage } from "./AdminProfilePage";
 import { AdminBlockedUserPage } from "./AdminBlockedUserPage";
 import { AdminPostPage } from "./AdminPostsPage";
+import { CreateUserPage } from "./CreateUserPage";
+import { AdminCreateUserPage } from "./AdminCreateUserPage";
 
 
 export const AdminHomePage = () => {
@@ -10,6 +12,8 @@ export const AdminHomePage = () => {
 
   const renderContent = () => {
     switch (selectedPage) {
+      case "Register":
+        return <AdminCreateUserPage />;
       case "Profile":
         return <AdminProfilePage />;
       case "User":
@@ -19,12 +23,17 @@ export const AdminHomePage = () => {
       case "Blocked":
         return <AdminBlockedUserPage/>
       default:
-        return <AdminPostPage/>;
+        return <AdminCreateUserPage/>;
     }
   };
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>
+      <link
+  href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+  rel="stylesheet"
+/>
+
       <div style={{ width: "250px" }}>
         <AdminNavbar onSelect={(page) => setSelectedPage(page)} />
       </div>

@@ -4,9 +4,11 @@ import { PostCard } from "../components/PostCard";
 import "../assets/HomePage.css"
 import { GetFriendsPosts } from "../services/postService";
 import { jwtDecode } from "jwt-decode";
-import { CustomJwtPayload } from "../components/Navbar";
+import { CustomJwtPayload } from "../components/ProtectRoutes";
 import { Post } from "../models/postModel";
 import { CreatePost } from "../components/CreatePost";
+import { HomeLeftSide } from "../components/HomeLeftSide";
+import { HomeRightSide } from "../components/HomeRightSide";
 
 
 export const HomePage: React.FC = () => {
@@ -46,9 +48,10 @@ export const HomePage: React.FC = () => {
       <Navbar />
       <div className="home-layout">
 
-        <div className="left-side">
-          <p>Levi panel: Možete dodati linkove, informacije, ili bilo šta drugo.</p>
-        </div>
+      <div className="left-side">
+        <HomeLeftSide />
+      </div>
+
 
         <div className="main-content">
           <CreatePost />
@@ -57,12 +60,12 @@ export const HomePage: React.FC = () => {
               <PostCard key={post._id} post={post} />
             ))
           ) : (
-            <h3>Find new friends!</h3> 
+            <h2 style={{marginLeft:"38%", marginTop:"10%"}}>Find New Friends</h2> 
           )}
         </div>
 
         <div className="right-side">
-          <p>Desni panel: Možete dodati widgete, oglase, ili bilo šta drugo.</p>
+          <HomeRightSide />
         </div>
       </div>
     </div>

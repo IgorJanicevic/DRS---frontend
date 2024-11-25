@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: 'Roboto', sans-serif; /* Zameni 'Roboto' željenim fontom */
+  font-family: 'Roboto', sans-serif;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

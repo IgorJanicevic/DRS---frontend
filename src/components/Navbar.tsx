@@ -1,11 +1,9 @@
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { NavLink, useNavigate } from 'react-router-dom';
 import "../assets/Navbar.css";
+import { CustomJwtPayload } from './ProtectRoutes';
 
-export interface CustomJwtPayload extends JwtPayload {
-    role: string;
-    sub: string;
-}
+
 
 export const Navbar = () => {
     const navigate = useNavigate();

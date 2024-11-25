@@ -5,7 +5,7 @@ import "../assets/AdminNavbar.css"
 
 
 export const AdminNavbar = ({ onSelect }: { onSelect: (page: string) => void }) => {
-  const [selected,setSelected] = useState<string>('Home');
+  const [selected,setSelected] = useState<string>('Register');
 	const navigate = useNavigate();
 	const handleLogout = () => {
         localStorage.removeItem('token');
@@ -19,11 +19,11 @@ export const AdminNavbar = ({ onSelect }: { onSelect: (page: string) => void }) 
 
       <nav id="colorlib-main-menu" role="navigation">
         <ul style={{padding:"20px"}}>
-          {/* <li>
-            <NavLink  to="#" onClick={()=>onSelect("Home")}>
-              Home
+           <li>
+           <NavLink to="#"  onClick={()=>{onSelect("Register");setSelected('Register')}} className={selected==='Register' ? 'clicked' : ''}>
+           Register
             </NavLink>
-          </li> */}
+          </li>
           <li>
           <NavLink to="#"  onClick={()=>{onSelect("Posts");setSelected('Posts')}} className={selected==='Posts' ? 'clicked' : ''}>
           Posts
@@ -40,7 +40,7 @@ export const AdminNavbar = ({ onSelect }: { onSelect: (page: string) => void }) 
             </NavLink>
           </li>
 		  <li>
-			<NavLink onClick={handleLogout} to={"/login"} style={{marginTop:"68vh"}}>
+			<NavLink onClick={handleLogout} to={"/login"} style={{marginTop:"60vh"}}>
 			Logout
 			</NavLink>
 		  </li>
