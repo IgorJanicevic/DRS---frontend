@@ -2,6 +2,9 @@ import { useState } from "react";
 import "../assets/LoginPage.css"
 import { loginUser } from "../services/authService";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { CustomJwtPayload } from "../components/ProtectRoutes";
+
 
 
 export const LoginPage = () => {
@@ -15,12 +18,26 @@ export const LoginPage = () => {
         const token = await loginUser(username,password);
         localStorage.setItem('token',token);
         setError(false);
-        navigate("/");
+        let role =null;
+        if (token) {
+            const decodedToken = jwtDecode<CustomJwtPayload>(token); 
+            role= decodedToken.role;
+            if(role==='admin'){
+              navigate('/admin');
+            }else{
+              navigate('/');
+            }
+            
+        }
         }catch(error){
             setPassword('');
             setError(true);
         }
     }
+
+    
+
+    
     
 
 
@@ -72,7 +89,7 @@ export const LoginPage = () => {
           </div>
           <button type="button" onClick={login} className="login-button">Login</button>
           <p className="login-register-link">
-            Don't have an account? <a href="/register" className="login-link">Register here</a>
+            Don't have an account? <a href="/create" className="login-link">Register here</a>
           </p>
         </form>
       </div>

@@ -1,10 +1,9 @@
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { NavLink, useNavigate } from 'react-router-dom';
 import "../assets/Navbar.css";
+import { CustomJwtPayload } from './ProtectRoutes';
 
-interface CustomJwtPayload extends JwtPayload {
-    role: string; 
-}
+
 
 export const Navbar = () => {
     const navigate = useNavigate();
@@ -17,12 +16,9 @@ export const Navbar = () => {
         userRole = decodedToken.role; 
     }
 
-    console.log(userRole); 
-
     const handleLogout = () => {
         localStorage.removeItem('token');
         navigate('/login');
-        console.log("Logout clicked");
     };
 
     const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -33,10 +29,11 @@ export const Navbar = () => {
         }
     };
 
-    return (
+    return (<>
+    
         <nav className="navbar">
             <div className="navbar-left">
-                <NavLink to="/" onClick={handleLinkClick} className={({ isActive }) => (isActive ? 'active' : '')}>Logo</NavLink>
+                <NavLink to="/info" onClick={handleLinkClick}>Logo</NavLink>
                 <input type='text' placeholder='Search'></input>
                 <NavLink to="/" onClick={handleLinkClick} className={({ isActive }) => (isActive ? 'active' : '')}>Home</NavLink>
                 <NavLink to="/friends" onClick={handleLinkClick} className={({ isActive }) => (isActive ? 'active' : '')}>Friends</NavLink>
@@ -71,13 +68,20 @@ export const Navbar = () => {
                 </div>
                 </div>
             )}
+
+            
             <div className='dropdown'>
-                <div className='dropdown-button'></div>
+                <div className='dropdown-button-profile'>👤</div>
+                <div className='dropdown-content'>
+                    <NavLink to="/profile" onClick={handleLinkClick}>Profile</NavLink>
+                    {token !== null && <button onClick={handleLogout}>Logout</button>}
+                    {token === null && <button onClick={handleLogout}>Login</button>}
+                </div>
             </div>
-            {token !== null && <button onClick={handleLogout}>Logout</button>}
-            {token === null && <button onClick={handleLogout}>Login</button>}
+            
             </div>
 
         </nav>
+        </>
     );
 };

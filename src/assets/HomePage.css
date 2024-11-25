@@ -1,0 +1,195 @@
+.home-page {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  height: 100vh; /* Zauzima celu visinu ekrana */
+}
+
+.home-layout {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0px;
+  flex-grow: 1; /* Omogućava da raste unutar .home-page */
+}
+
+.left-side,
+.right-side {
+  width: 300px; /* Fiksna širina */
+  height: calc(95vh - 80px); /* Visina s obzirom na padding/margin */
+  padding: 20px;
+  background-color: transparent;
+  border-radius: 8px;
+  overflow-y: auto; /* Omogućava skrolovanje sadržaja */
+  scrollbar-width: none; /* Sakriva skrol traku u modernim browserima */
+}
+
+.left-side::-webkit-scrollbar,
+.right-side::-webkit-scrollbar,
+.main-content::-webkit-scrollbar {
+  display: none; /* Sakriva skrol traku u WebKit browserima */
+}
+
+.main-content {
+  flex-grow: 1; /* Zauzima preostali prostor */
+  max-width: 700px; /* Fiksna širina */
+  height: calc(90vh - 60px); /* Visina s obzirom na ekran */
+  padding: 20px;
+  background-color: transparent;
+  border-radius: 8px;
+  overflow-y: auto; /* Skrolovanje za sadržaj */
+}
+
+.post-card {
+  margin-bottom: 50px;
+  width: 100%;
+  margin-left: 15px;
+}
+
+.sponsored {
+  margin-bottom: 20px;
+}
+
+.sponsored-card {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sponsored-card:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}
+
+.sponsored-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  margin-right: 15px;
+}
+
+.sponsored-text h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+}
+
+.sponsored-text p {
+  margin: 5px 0 0;
+  font-size: 14px;
+  color: #555;
+}
+
+
+.divider {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 20px 0;
+}
+
+.links {
+  font-size: 14px;
+}
+
+.links h4 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.links ul li {
+  margin-bottom: 8px;
+}
+
+.links ul li a {
+  text-decoration: none;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+.links ul li a:hover {
+  color: #0056b3;
+}
+
+.widgets ul,
+.suggested-friends ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.widgets ul li,
+.suggested-friends ul li {
+  margin-bottom: 10px;
+}
+
+.widgets ul li a {
+  text-decoration: none;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+.widgets ul li a:hover {
+  color: #0056b3;
+}
+
+.ads {
+  margin-right: 20px;
+}
+
+.ad-card {
+  display: flex;
+  margin-top: 5px;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ad-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  margin-right: 15px;
+}
+
+.suggested-friends ul li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  margin-right: 25px;
+}
+
+.friend-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.divider {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 20px 0;
+}
+
+
+
+.ad-card:hover, .sponsored-card:hover,.suggested-friends ul li:hover {
+  background-color: #ddd;
+  cursor: pointer;
+}

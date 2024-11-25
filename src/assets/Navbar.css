@@ -3,14 +3,18 @@
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
-    margin-bottom: 1%;
-    background: rgba(14, 56, 160, 0.9);
+    background: #0d6efd;
+    height: 25px;
     color: white;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+    rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    z-index: 1;
   }
   
   .navbar-left {
     display: flex;
     gap: 1rem; /* Razmak između linkova */
+
   }
   
   .navbar-left a {
@@ -55,7 +59,6 @@
   
   
   
-  /* Dropdown meni */
 .dropdown {
   position: relative;
 }
@@ -69,20 +72,29 @@
   border-radius: 5px;
 }
 
+.dropdown-button-profile{
+  background-color: #1877f2;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  height: 18px;
+  width: 22px;
+  border-radius: 100px;
+}
+
 .dropdown-button:hover {
   background-color: #165eab;
 }
 
-/* Padajući sadržaj */
 .dropdown-content {
-  display: none;
+  display:none;
   position: absolute;
   top: 100%;
   left: 0;
   background-color: white;
   color: black;
-  min-width: 100px;
-  max-width: fit-content;
+  width: 100px;
   padding: 10px;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
   border-radius: 5px;
@@ -93,6 +105,7 @@
   padding: 5px 10px;
   text-decoration: none;
   color: black;
+  margin-right: 100px;
   font-size: 14px;
 }
 
@@ -107,3 +120,5 @@
 
   
   
+
+
