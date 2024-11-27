@@ -170,7 +170,7 @@
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  border-radius: 5px;
+  border-radius: 25px;
   margin-right: 25px;
 }
 
@@ -190,6 +190,6 @@
 
 
 .ad-card:hover, .sponsored-card:hover,.suggested-friends ul li:hover {
-  background-color: #ddd;
+  background-color: #fc6e22cb;
   cursor: pointer;
 }

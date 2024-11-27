@@ -43,22 +43,16 @@ export const LoginPage = () => {
 
 
   return (
-    <div className="login-container">
-      <div className="image-container">
-        <img
-            src="https://i.pinimg.com/originals/4e/1f/df/4e1fdfb8a7eef2adf6c6b8e33f2f00e6.png"
-            alt="Sample"
-            className="image"
-        />
-        <div className="text-overlay">
-            <h1>Take a look on ducina mama fotke!</h1>
-            <p>hello frine</p>
-        </div>
+    <>
+    <div className="register-container">
+      
+      <div className="text-overlay">
+          {/* <h1>Take a look on ducina mama fotke!</h1>
+          <p>hello frine</p> */}
       </div>
 
-
-      <div className="login-right">
-        <form className="login-form">
+      <div className="register-right">
+        <form className="login-form" style={{padding:"50px"}}>
           <h1 className="login-title">Welcome!</h1>
           <p className="login-subtitle">Please login to your account</p>
           <div className="login-input-group">
@@ -94,5 +88,6 @@ export const LoginPage = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };

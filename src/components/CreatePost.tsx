@@ -38,6 +38,11 @@ export const CreatePost = () => {
         if (selectedImage) {
           imageUrl = await convertToBase64(selectedImage);
         }
+        if(imageUrl!=null){
+          setType('General');
+        }else{
+          setType('Status');
+        }
 
        await createPost({
         "user_id": user_id,
@@ -93,19 +98,6 @@ export const CreatePost = () => {
         onChange={(e) => setDescription(e.target.value)}
         disabled={isPosting}
       />
-      <div className="post-type-select">
-        {/* <label htmlFor="type">Type:</label>
-        <select
-          id="type"
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-          disabled={isPosting}
-        >
-          <option value="General">General</option>
-          <option value="Announcement">Announcement</option>
-          <option value="Event">Event</option>
-        </select> */}
-      </div>
       <div className="image-upload">
         <input
           type="file"
@@ -120,6 +112,7 @@ export const CreatePost = () => {
         )}
       </div>
       <button
+      //style={{backgroundImage:"url(https://cdn.leonardo.ai/users/a1057d29-236f-4cfa-b60c-66c4061fd2fd/generations/b160ee39-9819-4411-9382-4229113f32c8/Leonardo_Phoenix_A_dramatic_cinematic_photograph_serving_as_a_1.jpg)"}}
         className="post-button"
         onClick={handlePost}
         disabled={isPosting}

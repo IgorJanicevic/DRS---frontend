@@ -1,11 +1,12 @@
 
 .register-container {
-    background-image: url(https://cdn.leonardo.ai/users/a1057d29-236f-4cfa-b60c-66c4061fd2fd/generations/a166581c-1766-45ce-99c3-252cb8a49a48/Leonardo_Phoenix_a_dramatic_highcontrast_cinematic_photograph_1.jpg);
+    background-image: url( https://cdn.leonardo.ai/users/a1057d29-236f-4cfa-b60c-66c4061fd2fd/generations/4cc915d1-8142-4d27-ad7f-54d5b1bb6334/Leonardo_Phoenix_A_highcontrast_cinematic_photograph_of_a_slee_2.jpg);
     display: flex;
     justify-content: flex-end;
     align-items: center;
     height: auto;
   }
+
   
   .register-right {
     background-color: rgba(255, 255, 255, 1);

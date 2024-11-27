@@ -1,87 +1,84 @@
-import { jwtDecode, JwtPayload } from 'jwt-decode';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
+import { NavLink, useNavigate } from "react-router-dom";
 import "../assets/Navbar.css";
-import { CustomJwtPayload } from './ProtectRoutes';
+import { CustomJwtPayload } from "./ProtectRoutes";
+import { Notifications } from "./Notifications";
 
 
 
 export const Navbar = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    let userRole = null;
-    const token = localStorage.getItem('token'); 
+  let userRole = null;
+  const token = localStorage.getItem("token");
 
-    if (token) {
-        const decodedToken = jwtDecode<CustomJwtPayload>(token); 
-        userRole = decodedToken.role; 
+  if (token) {
+    const decodedToken = jwtDecode<CustomJwtPayload>(token); // Dekodiranje tokena
+    userRole = decodedToken.role; // Dobavljanje role korisnika
+  }
+
+  
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
+  const handleLogoClick = () => {
+    navigate("/");
+  };
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      e.preventDefault();
+      navigate("/login");
     }
+  };
 
-    const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate('/login');
-    };
+ 
 
-    const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            e.preventDefault(); 
-            navigate('/login');
-        }
-    };
+  return (
+    <nav className="navbar">
+      <img
+        src="https://media-cdn.incrowdsports.com/23610a1b-1c2e-4d2a-8fe4-ac2f8e400632.svg"
+        alt="Logo"
+        style={{ height: "25px", width: "auto", margin: "0px", padding: "0px",cursor:"pointer" }}
+        onClick={handleLogoClick}
+      />
+      <input type="text" placeholder="Search" className="users-search" />
+      <NavLink to="/" onClick={handleLinkClick} className={({ isActive }) => (isActive ? "active" : "")}>
+        Home
+      </NavLink>
+      <NavLink to="/friends" onClick={handleLinkClick} className={({ isActive }) => (isActive ? "active" : "")}>
+        Friends
+      </NavLink>
 
-    return (<>
-    
-        <nav className="navbar">
-            <div className="navbar-left">
-                <NavLink to="/info" onClick={handleLinkClick}>Logo</NavLink>
-                <input type='text' placeholder='Search'></input>
-                <NavLink to="/" onClick={handleLinkClick} className={({ isActive }) => (isActive ? 'active' : '')}>Home</NavLink>
-                <NavLink to="/friends" onClick={handleLinkClick} className={({ isActive }) => (isActive ? 'active' : '')}>Friends</NavLink>
-                
-            </div>
-            <div className="navbar-left">
-            {userRole === "admin" && (
-                <div className="dropdown">
-                <button className="dropdown-button">Admin</button>
-                <div className="dropdown-content">
-                    <NavLink
-                    to="/create"
-                    onClick={handleLinkClick}
-                    className={({ isActive }) => (isActive ? "active" : "")}
-                    >
-                    Create user
-                    </NavLink>
-                    <NavLink
-                    to="/pending"
-                    onClick={handleLinkClick}
-                    className={({ isActive }) => (isActive ? "active" : "")}
-                    >
-                    Pending posts
-                    </NavLink>
-                    <NavLink
-                    to="/blocked"
-                    onClick={handleLinkClick}
-                    className={({ isActive }) => (isActive ? "active" : "")}
-                    >
-                    Blocked users
-                    </NavLink>
-                </div>
-                </div>
-            )}
+      <Notifications />
 
-            
-            <div className='dropdown'>
-                <div className='dropdown-button-profile'>👤</div>
-                <div className='dropdown-content'>
-                    <NavLink to="/profile" onClick={handleLinkClick}>Profile</NavLink>
-                    {token !== null && <button onClick={handleLogout}>Logout</button>}
-                    {token === null && <button onClick={handleLogout}>Login</button>}
-                </div>
-            </div>
-            
-            </div>
-
-        </nav>
-        </>
-    );
+      <div className="hamburger-menu">
+        <input id="menu__toggle" type="checkbox" />
+        <label className="menu__btn" htmlFor="menu__toggle">
+          <span></span>
+        </label>
+        <ul className="menu__box">
+          <li>
+            <NavLink className="menu__item" to="/profile" onClick={handleLinkClick}>
+              Profile
+            </NavLink>
+          </li>
+          <li>
+            <NavLink className="menu__item" to="/settings" onClick={handleLinkClick}>
+              Settings
+            </NavLink>
+          </li>
+          <li>
+            <NavLink className="menu__item" to="/login" onClick={handleLogout}>
+              Logout
+            </NavLink>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  );
 };

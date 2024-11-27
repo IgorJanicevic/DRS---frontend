@@ -60,12 +60,12 @@ export const CreateUserPage = () => {
 
   return (
     <>
-    <div className="register-container">
+    <div className="register-container" style={{backgroundImage: "url(https://cdn.leonardo.ai/users/a1057d29-236f-4cfa-b60c-66c4061fd2fd/generations/4cc915d1-8142-4d27-ad7f-54d5b1bb6334/Leonardo_Phoenix_A_highcontrast_cinematic_photograph_of_a_slee_0.jpg)"}}>
         
-        <div className="text-overlay">
+        {/* <div className="text-overlay">
             <h1>Start a wave of change!</h1>
             <p>With just one click, you create a new profile,<br/> and maybe that user will become part of the next big story on our network.</p>
-        </div>
+        </div> */}
 
         <div className="register-right">
             <h1 className="register-title">Create an Account</h1>
