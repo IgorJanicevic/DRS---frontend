@@ -2,6 +2,7 @@ import { useState } from "react";
 import { UserRegister } from "../models/userModel";
 import { registerUser } from "../services/authService";
 import "../assets/RegisterPage.css"
+import React from 'react';
 
 
 export const CreateUserPage = () => {

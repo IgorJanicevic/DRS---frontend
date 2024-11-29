@@ -5,6 +5,8 @@ import { updateUserProfile } from "../services/authService";  // Pretpostavljam 
 import { jwtDecode } from "jwt-decode";
 import { Navbar } from "../components/Navbar";
 import { CustomJwtPayload } from "../components/ProtectRoutes";
+import "../assets/ProfilePage.css"
+import React from 'react';
 
 export const ProfilePage = () => {
     const [userProfile, setUserProfile] = useState<UserRegister | null>(null);
@@ -57,85 +59,109 @@ export const ProfilePage = () => {
         }
     };
 
-    return (<><Navbar/>
-        <div className="profile-container">
+    return (
+        <>
+          <Navbar />
+          <div className="profile-container">
             {userProfile ? (
-                <div className="profile-details">
-                    <h1>Profile of {userProfile.username}</h1>
-                    <label>Username</label>
-                        <input
-                            type="text"
-                            name="username"
-                            value={updatedProfile?.username}
-                            onChange={handleChange}>
-                        </input>
-                    <div>
-                        
-                        <label>Name:</label>
-                        <input 
-                            type="text" 
-                            name="first_name" 
-                            value={updatedProfile?.first_name} 
-                            onChange={handleChange} 
-                        />
-                        <input 
-                            type="text" 
-                            name="last_name" 
-                            value={updatedProfile?.last_name} 
-                            onChange={handleChange} 
-                        />
-                    </div>
-                    <div>
-                        <label>Email:</label>
-                        <input 
-                            type="email" 
-                            name="email" 
-                            value={updatedProfile?.email} 
-                            onChange={handleChange} 
-                        />
-                    </div>
-                    <div>
-                        <label>Mobile:</label>
-                        <input 
-                            type="text" 
-                            name="mobile" 
-                            value={updatedProfile?.mobile} 
-                            onChange={handleChange} 
-                        />
-                    </div>
-                    <div>
-                        <label>Address:</label>
-                        <input 
-                            type="text" 
-                            name="address" 
-                            value={updatedProfile?.address} 
-                            onChange={handleChange} 
-                        />
-                    </div>
-                    <div>
-                        <label>City:</label>
-                        <input 
-                            type="text" 
-                            name="city" 
-                            value={updatedProfile?.city} 
-                            onChange={handleChange} 
-                        />
-                    </div>
-                    <div>
-                        <label>Country:</label>
-                        <input 
-                            type="text" 
-                            name="country" 
-                            value={updatedProfile?.country} 
-                            onChange={handleChange} 
-                        />
-                    </div>
-                        <button onClick={handleSave}>Save Changes</button>                    
+              <div className="profile-details">
+                <h1>Profile of {userProfile.username}</h1>
+                <div className="form-group">
+                  <label>Username</label>
+                  <input
+                    type="text"
+                    name="username"
+                    value={updatedProfile?.username}
+                    onChange={handleChange}
+                    className="form-input"
+                  />
                 </div>
+      
+                <div className="form-group">
+                  <label>Name</label>
+                  <div className="name-inputs">
+                    <input
+                      type="text"
+                      name="first_name"
+                      value={updatedProfile?.first_name}
+                      onChange={handleChange}
+                      placeholder="First Name"
+                      className="form-input"
+                    />
+                    <input
+                      type="text"
+                      name="last_name"
+                      value={updatedProfile?.last_name}
+                      onChange={handleChange}
+                      placeholder="Last Name"
+                      className="form-input"
+                    />
+                  </div>
+                </div>
+      
+                <div className="form-group">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={updatedProfile?.email}
+                    onChange={handleChange}
+                    className="form-input"
+                  />
+                </div>
+      
+                <div className="form-group">
+                  <label>Mobile</label>
+                  <input
+                    type="text"
+                    name="mobile"
+                    value={updatedProfile?.mobile}
+                    onChange={handleChange}
+                    className="form-input"
+                  />
+                </div>
+      
+                <div className="form-group">
+                  <label>Address</label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={updatedProfile?.address}
+                    onChange={handleChange}
+                    className="form-input"
+                  />
+                </div>
+      
+                <div className="form-group">
+                  <label>City</label>
+                  <input
+                    type="text"
+                    name="city"
+                    value={updatedProfile?.city}
+                    onChange={handleChange}
+                    className="form-input"
+                  />
+                </div>
+      
+                <div className="form-group">
+                  <label>Country</label>
+                  <input
+                    type="text"
+                    name="country"
+                    value={updatedProfile?.country}
+                    onChange={handleChange}
+                    className="form-input"
+                  />
+                </div>
+      
+                <button className="save-button" onClick={handleSave}>
+                  Save Changes
+                </button>
+              </div>
             ) : (
-                <p>Loading user profile...</p>
+              <p>Loading user profile...</p>
             )}
-        </div>
+          </div>
         </>
-    );
+    );      
 };
