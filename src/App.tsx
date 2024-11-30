@@ -8,6 +8,7 @@ import { ProfilePage } from './pages/ProfilePage';
 import { jwtDecode } from 'jwt-decode';
 import { AdminHomePage } from './pages/AdminHomePage';
 import { ProtectedRouteForCommon, CustomJwtPayload, ProtectedRouteForAdmin } from './components/ProtectRoutes';
+import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 
 const router= createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router= createBrowserRouter([
   {
     path:'/create',
     element:<CreateUserPage/>
+  },
+  {
+    path:'/privacy-policy',
+    element:<PrivacyPolicyPage/>
   },
   {
     path:'/profile',
