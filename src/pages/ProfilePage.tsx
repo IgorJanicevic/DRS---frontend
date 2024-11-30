@@ -13,6 +13,8 @@ export const ProfilePage = () => {
     const [userId,setUserId] = useState('');
     const [editing, setEditing] = useState<boolean>(false);
     const [updatedProfile, setUpdatedProfile] = useState<UserRegister | null>(null);
+    const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('token'); 
@@ -42,7 +44,7 @@ export const ProfilePage = () => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         if (updatedProfile) {
-            setUpdatedProfile({ ...updatedProfile, [name]: value });
+          setUpdatedProfile({ ...updatedProfile, [name]: value });
         }
     };
 
@@ -76,6 +78,19 @@ export const ProfilePage = () => {
                     className="form-input"
                   />
                 </div>
+
+                <div className="form-group">
+                  <label>Password</label>
+                  <div className="password-input">
+                      <input
+                          type={showPassword ? "text" : "password"}
+                          name="password"
+                          onChange={handleChange}
+                          placeholder="New Password"
+                          className="form-input"
+                      />
+                  </div>
+              </div>
       
                 <div className="form-group">
                   <label>Name</label>
