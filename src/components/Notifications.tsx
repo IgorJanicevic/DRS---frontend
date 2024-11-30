@@ -34,6 +34,7 @@ export const Notifications = () => {
   const handleOutsideClick = (event: MouseEvent) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setShowNotifications(false);
+      setUnreadCount(0);
     }
   };
 
@@ -46,7 +47,7 @@ export const Notifications = () => {
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, []);
+  }, [unreadCount]);
 
 
   const handleFriendshipAction = (friendshipId: string | undefined, action: "accept" | "reject") => {
