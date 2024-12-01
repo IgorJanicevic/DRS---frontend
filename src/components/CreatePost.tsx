@@ -89,7 +89,7 @@ export const CreatePost = () => {
   return (
     <div className="create-post-container">
       <div className="post-header">
-        <h4 style={{marginLeft:"44%"}}>New post</h4>
+        <h4 style={{marginLeft:"43%"}}>New post</h4>
       </div>
       <textarea
         className="post-input"

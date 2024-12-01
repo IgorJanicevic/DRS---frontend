@@ -22,24 +22,24 @@ export const AdminPostPage: React.FC = () => {
   useEffect(() => {
     getAllPosts();
 
-    const socket = io("http://127.0.0.1:5000", {
-      transports: ["polling", "websocket"],
-    });
+    // const socket = io("http://127.0.0.1:5000", {
+    //   transports: ["polling", "websocket"],
+    // });
 
-    socket.on("connect", () => {
-      console.log("Konekcija uspostavljena!");
-    });
+    // socket.on("connect", () => {
+    //   console.log("Konekcija uspostavljena!");
+    // });
 
-    socket.on("new_post", (data) => {
-      console.log("Nova objava je primljena:", data);
-      setPosts((prevPosts) => [...prevPosts, data]);
-    });
+    // socket.on("new_post", (data) => {
+    //   console.log("Nova objava je primljena:", data);
+    //   setPosts((prevPosts) => [...prevPosts, data]);
+    // });
 
-    return () => {
-      socket.off("connect");
-      socket.off("new_post");
-      socket.disconnect();
-    };
+    // return () => {
+    //   socket.off("connect");
+    //   socket.off("new_post");
+    //   socket.disconnect();
+    // };
   }, []);
 
       const handleAccept = async (postId: string) => {
@@ -57,6 +57,7 @@ export const AdminPostPage: React.FC = () => {
             const result = await rejectPost(postId);
             console.log('Post rejected:', result);
             setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+            alert('Post rejected successfully');
           } catch (error) {
             console.error('Error rejecting post:', error);
         }

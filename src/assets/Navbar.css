@@ -50,6 +50,7 @@
   outline: none;
   transition: border-color 0.3s ease-in-out;
   position: relative;
+  width: 200px;
 }
 
 .users-search:focus {
@@ -78,6 +79,8 @@
   font-size: 24px;
   margin-left: 20px;
   height: 24px;
+  width: 30px;
+  margin-right: 120px;
 }
 
 .unread-count {

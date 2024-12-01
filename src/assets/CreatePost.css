@@ -31,7 +31,8 @@
   
   .post-button {
     margin-top: 10px;
-    width: 100%;
+    width: 50%;
+    margin-left: 24%;
     padding: 10px;
     font-size: 16px;
     color: white;
@@ -55,6 +56,7 @@
   .image-upload {
     margin-top: 10px;
     display: flex;
+    margin-right: 25px;
     flex-direction: row;
     gap: 10px;
   }
