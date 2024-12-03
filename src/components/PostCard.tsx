@@ -8,7 +8,7 @@ interface PostCardProps {
 
 export const PostCard: React.FC<PostCardProps> = ({ post }) => {
   return (
-    <div className="post-card">
+    <div className="post-card" style={{marginLeft:"35px"}}>
       <div className="post-header">
         <span className="post-user-id">{post.user_id}</span>
         <span className="post-timestamp">

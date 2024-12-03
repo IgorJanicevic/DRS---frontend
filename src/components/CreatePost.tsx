@@ -38,6 +38,11 @@ export const CreatePost = () => {
         if (selectedImage) {
           imageUrl = await convertToBase64(selectedImage);
         }
+
+        //Dodato za drugaciji nacin
+        if (previewImage!=null){
+          imageUrl= previewImage;
+        }
         if(imageUrl!=null){
           setType('General');
         }else{
@@ -66,9 +71,24 @@ export const CreatePost = () => {
     }
   };
 
+  //Dodato za drugaciji nacin
+  //Valjda je ovo potrebno da se ubacuje negde u doker
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        if(fileReader.result!=null)
+        setPreviewImage(fileReader.result as string);
+      };
+      fileReader.readAsDataURL(e.target.files[0]);
+    }
+  };
+
+
+  //Prvi nacin ovo pozvati u input za image
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
+    if (file !=null) {
       setSelectedImage(file);
       setPreviewImage(URL.createObjectURL(file)); // Generisanje URL-a za pregled slike
     }
@@ -102,7 +122,7 @@ export const CreatePost = () => {
         <input
           type="file"
           accept="image/*"
-          onChange={handleImageChange}
+          onChange={handleFileChange}
           disabled={isPosting}
         />
         {previewImage && (

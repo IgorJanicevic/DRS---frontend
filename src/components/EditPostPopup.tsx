@@ -45,8 +45,19 @@ export const EditPostPopup: React.FC<EditPostPopupProps> = ({ postId, onClose, o
   };
 
   if (loading) return ReactDOM.createPortal(<div className="popup">Loading...</div>, document.body);
-  if (error) return ReactDOM.createPortal(<div className="popup">{error}</div>, document.body);
-
+  if (error) {
+    return ReactDOM.createPortal(
+      <div className="error-popup">
+        <div className="error-content">
+          <button className="close-error" onClick={onClose}>
+            &times;
+          </button>
+          <p>Post not found</p>
+        </div>
+      </div>,
+      document.body
+    );
+  }
   return ReactDOM.createPortal(
     <div className="popup">
       <div className="popup-content">

@@ -1,19 +1,24 @@
+// AdminPostsPage.tsx
 import React, { useState, useEffect } from "react";
-import io from "socket.io-client";
 import { PostCard } from "../components/PostCard";
 import { Post } from "../models/postModel";
-import '../assets/PostCard.css';
+import "../assets/PostCard.css";
 import { getAllPendingPosts, acceptPost, rejectPost } from "../services/postService";
+import { Socket } from "socket.io-client";
+import { DecodeToken } from "../components/ProtectRoutes";
 
+interface AdminPostPageProps {
+  socket: Socket | null;
+}
 
-
-
-export const AdminPostPage: React.FC = () => {
+export const AdminPostPage: React.FC<AdminPostPageProps> = ({ socket }) => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const decoded = DecodeToken();
 
   const getAllPosts = async () => {
     try {
-      setPosts(await getAllPendingPosts());
+      const allPosts = await getAllPendingPosts();
+      setPosts(allPosts);
     } catch (error) {
       console.error("Greška prilikom učitavanja objava:", error);
     }
@@ -21,47 +26,42 @@ export const AdminPostPage: React.FC = () => {
 
   useEffect(() => {
     getAllPosts();
+    if (socket) {
+      console.log("Socket connected:", socket.id);
 
-    // const socket = io("http://127.0.0.1:5000", {
-    //   transports: ["polling", "websocket"],
-    // });
+      socket.on("new_post", (data: Post) => {
+        console.log("Primljen post preko WebSocket-a:", data);
+        setPosts((prevPosts) => [data, ...prevPosts]);
+        alert("OKEJ RADI");
+      });
 
-    // socket.on("connect", () => {
-    //   console.log("Konekcija uspostavljena!");
-    // });
+      return () => {
+        console.log("Unmounting component... Disconnecting socket...");
+        socket.off("new_post");
+      };
+    }
+  }, [socket]);
 
-    // socket.on("new_post", (data) => {
-    //   console.log("Nova objava je primljena:", data);
-    //   setPosts((prevPosts) => [...prevPosts, data]);
-    // });
+  const handleAccept = async (postId: string) => {
+    try {
+      const result = await acceptPost(postId);
+      console.log("Post accepted:", result);
+      setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+    } catch (error) {
+      console.error("Error accepting post:", error);
+    }
+  };
 
-    // return () => {
-    //   socket.off("connect");
-    //   socket.off("new_post");
-    //   socket.disconnect();
-    // };
-  }, []);
-
-      const handleAccept = async (postId: string) => {
-        try {
-            const result = await acceptPost(postId);
-            console.log('Post accepted:', result);
-            setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
-          } catch (error) {
-            console.error('Error accepting post:', error);
-        }
-    };
-
-    const handleReject = async (postId: string) => {
-        try {
-            const result = await rejectPost(postId);
-            console.log('Post rejected:', result);
-            setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
-            alert('Post rejected successfully');
-          } catch (error) {
-            console.error('Error rejecting post:', error);
-        }
-    };
+  const handleReject = async (postId: string) => {
+    try {
+      const result = await rejectPost(postId);
+      console.log("Post rejected:", result);
+      setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+      alert("Post rejected successfully");
+    } catch (error) {
+      console.error("Error rejecting post:", error);
+    }
+  };
 
   return (
     <div className="admin-post-page">

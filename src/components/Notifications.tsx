@@ -1,13 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, act } from "react";
 import "../assets/Navbar.css";
 import { getUserNotifications, markNotificationsAsRead } from "../services/notificationService";
 import { NotificationModel } from "../models/notificationModel";
-import { socket } from "../socket";
+//import { socket } from "../socket";
 import { DecodeToken } from "./ProtectRoutes";
-import { EditPostPopup } from "./EditPostPopup";
-import { CreatePost } from "./CreatePost";
 import { updatePost } from "../services/postService";
-
+import { EditPostPopup } from "./EditPostPopup";
+import { acceptFriendship, rejectFriendship } from "../services/friendshipService";
 
 export const Notifications = () => {
   const [notifications, setNotifications] = useState<NotificationModel[]>([]);
@@ -15,6 +14,7 @@ export const Notifications = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
 
   const fetchNotifications = async () => {
     try {
@@ -29,7 +29,7 @@ export const Notifications = () => {
 
   const handleNotificationClick = () => {
     setShowNotifications(!showNotifications);
-    if (!showNotifications && unreadCount !== 0) markNotificationsAsRead();
+    if (!showNotifications && unreadCount !== 0) markNotificationsAsRead(); // Mark as read when opened
   };
 
   const handleOutsideClick = (event: MouseEvent) => {
@@ -38,6 +38,57 @@ export const Notifications = () => {
       setUnreadCount(0);
     }
   };
+
+  useEffect(() => {
+    fetchNotifications();
+
+    // Add event listener for outside click
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [unreadCount]);
+
+  useEffect(() => {
+    // socket.on("connect", () => {
+    //   console.log("Konekcija uspostavljena!");
+    // });
+
+    // socket.on("notification", (data: NotificationModel) => {
+    //   console.log("Notifikacija je ucitana");
+    //   alert("GLEDAJ RADI");
+    //   //setNotifications((prevNotifications) => [...prevNotifications, data]);
+    // });
+
+    // // Clean up the socket event listeners when the component is unmounted
+    // return () => {
+    //   socket.off("connect");
+    //   socket.off("notification");
+    // };
+  }, []);
+
+  const handleFriendshipAction = async (friendshipId: string | undefined, action: "accept" | "reject") => {
+    if (!friendshipId) {
+      alert('Invalid friendship ID');
+      return;
+    }
+  
+    console.log(`Friendship ${action} for ID: ${friendshipId}`);
+  
+    try {
+      if (action === 'accept') {
+        await acceptFriendship(friendshipId);
+        alert('Friendship accepted successfully');
+      } else if (action === 'reject') {
+        await rejectFriendship(friendshipId);
+        alert('Friendship rejected successfully');
+      }
+    } catch (error) {
+      console.error('Error handling friendship action:', error);
+      alert(`An error occurred while trying to ${action} the friendship.\nPlease try again later.`);
+    }
+  };
+  
 
   const handleEditPost = (postId: string | undefined) => {
     if (postId) setSelectedPostId(postId);
@@ -56,92 +107,77 @@ export const Notifications = () => {
     alert('Post updated successfully');
   };
 
-  useEffect(() => {
-    fetchNotifications();
-
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, [unreadCount]);
-
-  useEffect(() => {
-    socket.on("connect", () => {
-      console.log("Connected!");
-    });
-
-    socket.on("notification", (data: NotificationModel) => {
-      console.log("Notification received");
-      setNotifications((prevNotifications) => [...prevNotifications, data]);
-    });
-
-    return () => {
-      socket.off("connect");
-      socket.off("notification");
-    };
-  }, []);
 
   return (
     <>
-      <div className="notification-bell" onClick={handleNotificationClick}>
-        <span className="bell-icon">
-          <img
-            src="https://img.icons8.com/m_rounded/512/FD7E14/appointment-reminders.png"
-            style={{ width: "30px", height: "28px" }}
-            alt="Bell Icon"
-          />
-        </span>
-        {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
-      </div>
+     <div className="notification-bell" onClick={handleNotificationClick}>
+  <span className="bell-icon"><img src="https://img.icons8.com/m_rounded/512/FD7E14/appointment-reminders.png" style={{width:"30px",height:"28px"}}></img></span>
+  {unreadCount > 0 && <span className="unread-count">{unreadCount}</span>}
+</div>
 
-      {showNotifications && (
-        <div className="notification-dropdown" ref={dropdownRef}>
-          <ul>
-            {notifications.length > 0 ? (
-              notifications.map((notification, index) => (
-                <li
-                  key={index}
-                  className={notification.status === "unread" ? "unread" : ""}
-                >
-                  <div className="notification-message">
-                    {notification.type === "info" && <span>{notification.message}</span>}
+{showNotifications && (
+  <div className="notification-dropdown" ref={dropdownRef}>
+    <ul>
+      {notifications.length > 0 ? (
+        notifications.map((notification, index) => (
+          <li
+            key={index}
+            className={notification.status === "unread" ? "unread" : ""}
+          >
+            <div className="notification-message">
+              {notification.type === "info" && <span>{notification.message}</span>}
 
-                    {notification.type === "post_rejected" && (
-                      <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
-                        <span
-                          style={{
-                            maxWidth: "260px",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {notification.message}.<br />Click edit for more information.
-                        </span>
-                        <div
-                          className="notification-buttons"
-                          style={{ marginLeft: "auto" }}
-                        >
-                          <button
-                            className="edit"
-                            onClick={() => handleEditPost(notification.metadata.post_id)}
-                          >
-                            Edit
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </li>
-              ))
-            ) : (
-              <li className="notification-empty">No notifications</li>
-            )}
-          </ul>
-        </div>
+              {notification.type === "friendship_request" && (
+                <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
+                    <span style={{ maxWidth: "260px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    {notification.message} <br/><u>{notification.metadata.username}</u>
+                    </span>
 
+                    <div className="notification-buttons" style={{ display: "flex", flexDirection: "column", gap: "10px", marginLeft: "auto" }}>
+                    <button
+                        onClick={() =>
+                        handleFriendshipAction(notification.metadata.friendship_id, "accept")
+                        }
+                    >
+                        Accept
+                    </button>
+                    <button
+                        className="reject"
+                        onClick={() =>
+                        handleFriendshipAction(notification.metadata.friendship_id, "reject")
+                        }
+                    >
+                        Reject
+                    </button>
+                    </div>
+                </div>
+                )}
+
+                {notification.type === "post_rejected" && (
+                <div style={{ display: "flex", flexDirection: "row", gap: "10px"}}>
+                    <span style={{ maxWidth: "260px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                    {notification.message}.<br />Click edit for more information.
+                    </span>
+                    <div className="notification-buttons" style={{ marginLeft: "auto" }}>
+                    <button
+                        className="edit"
+                        onClick={() => handleEditPost(notification.metadata.post_id)}
+                    >
+                        Edit
+                    </button>
+                    </div>
+                </div>
+                )}
+
+            </div>
+          </li>
+        ))
+      ) : (
+        <li className="notification-empty">No notifications</li>
       )}
-
+    </ul>
+  </div>
+)}
 {selectedPostId && (
         <EditPostPopup
           postId={selectedPostId}
@@ -150,7 +186,7 @@ export const Notifications = () => {
         />
       )}
 
-      
+        
     </>
   );
 };
