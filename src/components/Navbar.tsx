@@ -46,7 +46,7 @@ export const Navbar = () => {
         style={{ height: "25px", width: "auto", margin: "0px", padding: "0px",cursor:"pointer" }}
         onClick={handleLogoClick}
       />
-      <input type="text" placeholder="Search" className="users-search" />
+      <input type="text" placeholder="Search" className="users-search" style={{width:"200px"}}/>
       <NavLink to="/" onClick={handleLinkClick} className={({ isActive }) => (isActive ? "active" : "")}>
         Home
       </NavLink>
@@ -54,7 +54,9 @@ export const Navbar = () => {
         Friends
       </NavLink>
 
+      <div style={{marginLeft:"850px",marginBottom:"3px"}}>
       <Notifications />
+      </div>
 
       <div className="hamburger-menu">
         <input id="menu__toggle" type="checkbox" />

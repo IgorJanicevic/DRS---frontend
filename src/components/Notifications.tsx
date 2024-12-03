@@ -1,15 +1,18 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, act } from "react";
 import "../assets/Navbar.css";
 import { getUserNotifications, markNotificationsAsRead } from "../services/notificationService";
 import { NotificationModel } from "../models/notificationModel";
-
-
-
+//import { socket } from "../socket";
+import { DecodeToken } from "./ProtectRoutes";
+import { updatePost } from "../services/postService";
+import { EditPostPopup } from "./EditPostPopup";
+import { acceptFriendship, rejectFriendship } from "../services/friendshipService";
 
 export const Notifications = () => {
   const [notifications, setNotifications] = useState<NotificationModel[]>([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
 
@@ -24,19 +27,17 @@ export const Notifications = () => {
     }
   };
 
-
   const handleNotificationClick = () => {
     setShowNotifications(!showNotifications);
-    if (!showNotifications && unreadCount!=0) markNotificationsAsRead(); // Mark as read when opened
+    if (!showNotifications && unreadCount !== 0) markNotificationsAsRead(); // Mark as read when opened
   };
-
 
   const handleOutsideClick = (event: MouseEvent) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
       setShowNotifications(false);
+      setUnreadCount(0);
     }
   };
-
 
   useEffect(() => {
     fetchNotifications();
@@ -46,18 +47,66 @@ export const Notifications = () => {
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
+  }, [unreadCount]);
+
+  useEffect(() => {
+    // socket.on("connect", () => {
+    //   console.log("Konekcija uspostavljena!");
+    // });
+
+    // socket.on("notification", (data: NotificationModel) => {
+    //   console.log("Notifikacija je ucitana");
+    //   alert("GLEDAJ RADI");
+    //   //setNotifications((prevNotifications) => [...prevNotifications, data]);
+    // });
+
+    // // Clean up the socket event listeners when the component is unmounted
+    // return () => {
+    //   socket.off("connect");
+    //   socket.off("notification");
+    // };
   }, []);
 
-
-  const handleFriendshipAction = (friendshipId: string | undefined, action: "accept" | "reject") => {
+  const handleFriendshipAction = async (friendshipId: string | undefined, action: "accept" | "reject") => {
+    if (!friendshipId) {
+      alert('Invalid friendship ID');
+      return;
+    }
+  
     console.log(`Friendship ${action} for ID: ${friendshipId}`);
-    // Implement API call for accepting/rejecting friendship here
+  
+    try {
+      if (action === 'accept') {
+        await acceptFriendship(friendshipId);
+        alert('Friendship accepted successfully');
+      } else if (action === 'reject') {
+        await rejectFriendship(friendshipId);
+        alert('Friendship rejected successfully');
+      }
+    } catch (error) {
+      console.error('Error handling friendship action:', error);
+      alert(`An error occurred while trying to ${action} the friendship.\nPlease try again later.`);
+    }
   };
+  
 
   const handleEditPost = (postId: string | undefined) => {
-    console.log(`Editing post with ID: ${postId}`);
-    // Trigger popup or navigate to post editor
+    if (postId) setSelectedPostId(postId);
   };
+
+  const handlePopupClose = () => {
+    setSelectedPostId(null);
+  };
+
+  const handlePostSave = (updatedPost: { description: string; image_url?: string; status:string}) => {
+    console.log("Updated post:", updatedPost);
+
+    if(selectedPostId)
+    updatePost(selectedPostId,updatedPost);
+    handlePopupClose();
+    alert('Post updated successfully');
+  };
+
 
   return (
     <>
@@ -129,7 +178,13 @@ export const Notifications = () => {
     </ul>
   </div>
 )}
-
+{selectedPostId && (
+        <EditPostPopup
+          postId={selectedPostId}
+          onClose={handlePopupClose}
+          onSave={handlePostSave}
+        />
+      )}
 
         
     </>

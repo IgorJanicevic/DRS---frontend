@@ -1,5 +1,38 @@
 import { Post,PostCreate} from "../models/postModel";
 
+
+export const getPostForEdit = async(post_id:string):Promise<Post> => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`http://127.0.0.1:5000/post/${post_id}`,{
+        method:'GET',
+        headers:{
+            'Authorization':token+'',
+            'Content-Type':'application/json',
+        }
+    });
+
+    if(!response.ok){
+        throw new Error('Error with getting user posts');
+    }
+    return response.json();
+}
+
+export const updatePost = async(post_id:string,post:any):Promise<Post> => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`http://localhost:5000/post/${post_id}`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(post)
+    });
+
+    if (!response.ok) {
+        throw new Error('Error with updating the post');
+    }
+    return response.json();}
+
 export const GetFriendsPosts= async(user_id:string):Promise<Post[]>=>{
     const token = localStorage.getItem('token');
     const response = await fetch(`http://127.0.0.1:5000/post/friends/${user_id}`,{
@@ -15,6 +48,22 @@ export const GetFriendsPosts= async(user_id:string):Promise<Post[]>=>{
     }
     return response.json();
 
+}
+
+export const getAllPendingPosts= async():Promise<Post[]>=>{
+    const token = localStorage.getItem('token');
+    const response = await fetch(`http://localhost:5000/post/pending`,{
+        method:'GET',
+        headers:{
+            'Authorization':token+'',
+            'Content-Type':'application/json',
+        }
+    });
+
+    if(!response.ok){
+        throw new Error('Error with getting user posts');
+    }
+    return response.json();
 }
 
 
@@ -51,3 +100,36 @@ export const createPost= async(data:PostCreate)=>{
     }
     return response.json();
 }
+
+
+export const acceptPost = async (postId: string): Promise<any> => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`http://localhost:5000/post/accept/${postId}`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error('Error accepting the post');
+    }
+    return response.json();
+};
+
+export const rejectPost = async (postId: string): Promise<any> => {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`http://localhost:5000/post/reject/${postId}`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+        }
+    });
+
+    if (!response.ok) {
+        throw new Error('Error rejecting the post');
+    }
+    return response.json();
+};

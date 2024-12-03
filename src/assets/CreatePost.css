@@ -31,7 +31,8 @@
   
   .post-button {
     margin-top: 10px;
-    width: 100%;
+    width: 50%;
+    margin-left: 24%;
     padding: 10px;
     font-size: 16px;
     color: white;
@@ -55,6 +56,7 @@
   .image-upload {
     margin-top: 10px;
     display: flex;
+    margin-right: 25px;
     flex-direction: row;
     gap: 10px;
   }
@@ -84,8 +86,8 @@
   input[type="file"]::before {
     position: absolute;
     pointer-events: none;
-    top: 10px;
-    left: 16px;
+    top: 15px;
+    left: 23px;
     height: 20px;
     width: 20px;
     content: "";
@@ -95,8 +97,8 @@
   input[type="file"]::after {
     position: absolute;
     pointer-events: none;
-    top: 11px;
-    left: 40px;
+    top: 19px;
+    left: 50px;
     color: #0964b0;
     content: "Upload File";
   }
