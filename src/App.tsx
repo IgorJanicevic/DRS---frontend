@@ -9,6 +9,7 @@ import { jwtDecode } from 'jwt-decode';
 import { AdminHomePage } from './pages/AdminHomePage';
 import { ProtectedRouteForCommon, CustomJwtPayload, ProtectedRouteForAdmin } from './components/ProtectRoutes';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
+import { SearchedUsers } from "./pages/SearchedUsers";
 
 const router= createBrowserRouter([
   {
@@ -39,6 +40,11 @@ const router= createBrowserRouter([
     element: <ProtectedRouteForAdmin />,
     children: [{ path: "/admin", element: <AdminHomePage /> }],
   },
+  {
+    path: "/search-results",
+    element: <SearchedUsers />,
+  }
+  
 ])
 
 
