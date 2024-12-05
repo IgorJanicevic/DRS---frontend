@@ -1,67 +1,64 @@
-// AdminPostsPage.tsx
-import React, { useState, useEffect } from "react";
-import { PostCard } from "../components/PostCard";
-import { Post } from "../models/postModel";
-import "../assets/PostCard.css";
-import { getAllPendingPosts, acceptPost, rejectPost } from "../services/postService";
-import { Socket } from "socket.io-client";
-import { DecodeToken } from "../components/ProtectRoutes";
+import React, { useState, useEffect } from 'react';
+import { PostCard } from '../components/PostCard';
+import { Post } from '../models/postModel';
+import '../assets/PostCard.css';
+import {
+  getAllPendingPosts,
+  acceptPost,
+  rejectPost,
+} from '../services/postService';
+import { socket } from '../socket';
 
-interface AdminPostPageProps {
-  socket: Socket | null;
-}
-
-export const AdminPostPage: React.FC<AdminPostPageProps> = ({ socket }) => {
+export const AdminPostPage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const decoded = DecodeToken();
 
-  const getAllPosts = async () => {
+  const fetchAllPosts = async () => {
     try {
       const allPosts = await getAllPendingPosts();
       setPosts(allPosts);
     } catch (error) {
-      console.error("Greška prilikom učitavanja objava:", error);
+      console.error('Error fetching posts:', error);
     }
   };
 
-  useEffect(() => {
-    getAllPosts();
-    if (socket) {
-      console.log("Socket connected:", socket.id);
-
-      socket.on("new_post", (data: Post) => {
-        console.log("Primljen post preko WebSocket-a:", data);
-        setPosts((prevPosts) => [data, ...prevPosts]);
-        alert("OKEJ RADI");
-      });
-
-      return () => {
-        console.log("Unmounting component... Disconnecting socket...");
-        socket.off("new_post");
-      };
-    }
-  }, [socket]);
-
   const handleAccept = async (postId: string) => {
     try {
-      const result = await acceptPost(postId);
-      console.log("Post accepted:", result);
-      setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
+      await acceptPost(postId);
+      setPosts((prevPosts) =>
+        prevPosts.filter((post) => post._id !== postId)
+      );
     } catch (error) {
-      console.error("Error accepting post:", error);
+      console.error('Error accepting post:', error);
     }
   };
 
   const handleReject = async (postId: string) => {
     try {
-      const result = await rejectPost(postId);
-      console.log("Post rejected:", result);
-      setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
-      alert("Post rejected successfully");
+      await rejectPost(postId);
+      setPosts((prevPosts) =>
+        prevPosts.filter((post) => post._id !== postId)
+      );
     } catch (error) {
-      console.error("Error rejecting post:", error);
+      console.error('Error rejecting post:', error);
     }
   };
+
+  useEffect(() => {
+    fetchAllPosts();
+  
+    const onNewPost = (newPost: Post) => {
+      setPosts((prevPosts) => [...prevPosts, newPost]);
+      console.log('Dobio je post: ', socket.id, newPost.description);
+    };
+  
+    socket.on('new_post', onNewPost);
+  
+    return () => {
+      socket.off('new_post', onNewPost);
+      console.log('Odvezao se new_post: ', socket.id);
+    };
+  }, []);
+  
 
   return (
     <div className="admin-post-page">
@@ -75,14 +72,12 @@ export const AdminPostPage: React.FC<AdminPostPageProps> = ({ socket }) => {
                 <button
                   className="accept-button"
                   onClick={() => handleAccept(post._id)}
-                  disabled={post.status === "Accepted"}
                 >
                   Accept
                 </button>
                 <button
                   className="reject-button"
                   onClick={() => handleReject(post._id)}
-                  disabled={post.status === "Rejected"}
                 >
                   Reject
                 </button>
@@ -90,7 +85,7 @@ export const AdminPostPage: React.FC<AdminPostPageProps> = ({ socket }) => {
             </div>
           ))
         ) : (
-          <p>Nema novih objava.</p>
+          <p>No new posts.</p>
         )}
       </div>
     </div>

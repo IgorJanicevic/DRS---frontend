@@ -6,29 +6,11 @@ import { AdminBlockedUserPage } from "./AdminBlockedUserPage";
 import { AdminPostPage } from "./AdminPostsPage";
 import { CreateUserPage } from "./CreateUserPage";
 import { AdminCreateUserPage } from "./AdminCreateUserPage";
-import { io, Socket } from "socket.io-client";
-import { DecodeToken } from "../components/ProtectRoutes";
 
 export const AdminHomePage = () => {
   const [selectedPage, setSelectedPage] = useState<string>("");
-  const [adminSocket, setAdminSocket] = useState<Socket | null>(null);
-  const decoded = DecodeToken();
-
-  const socket = io("http://127.0.0.1:5000", {
-    transports: ["polling", "websocket"],
-    query: { user_id: decoded?.sub, role: decoded?.role } 
-  });
 
 
-  useEffect(() => {
-
-    setAdminSocket(socket);
-
-     return () => {
-       console.log("Disconnecting socket from AdminHomePage...");
-       socket.disconnect();
-     };
-  }, []);
 
   const renderContent = () => {
     switch (selectedPage) {
@@ -39,7 +21,7 @@ export const AdminHomePage = () => {
       case "User":
         return <AdminBlockedUserPage />;
       case "Posts":
-        return <AdminPostPage socket={adminSocket} />;
+        return <AdminPostPage/>;
       case "Blocked":
         return <AdminBlockedUserPage />;
       default:

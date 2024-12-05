@@ -48,7 +48,7 @@ export const Navbar = () => {
       />
       <input type="text" placeholder="Search" className="users-search" style={{width:"200px"}}/>
       <NavLink to="/" onClick={handleLinkClick} className={({ isActive }) => (isActive ? "active" : "")}>
-        ToBoze
+        Home
       </NavLink>
       <NavLink to="/friends" onClick={handleLinkClick} className={({ isActive }) => (isActive ? "active" : "")}>
         Friends
