@@ -3,12 +3,13 @@ import { NavLink, useNavigate } from "react-router-dom";
 import "../assets/Navbar.css";
 import { CustomJwtPayload } from "./ProtectRoutes";
 import { Notifications } from "./Notifications";
+import { useState } from "react";
 
 
 
 export const Navbar = () => {
   const navigate = useNavigate();
-
+  const [inputSearch,setInputSearch] = useState('');
   let userRole = null;
   const token = localStorage.getItem("token");
 
@@ -36,7 +37,13 @@ export const Navbar = () => {
     }
   };
 
- 
+  const handleSearchSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (inputSearch.trim()) {
+      navigate(`/search-results?query=${inputSearch.trim()}`);
+    }
+  };
+  
 
   return (
     <nav className="navbar">
@@ -45,8 +52,18 @@ export const Navbar = () => {
         alt="Logo"
         style={{ height: "25px", width: "auto", margin: "0px", padding: "0px",cursor:"pointer" }}
         onClick={handleLogoClick}
-      />
-      <input type="text" placeholder="Search" className="users-search" style={{width:"200px"}}/>
+      />  
+      <form onSubmit={handleSearchSubmit}>
+  <input
+    type="text"
+    placeholder="Search"
+    className="users-search"
+    style={{ width: "200px" }}
+    value={inputSearch}
+    onChange={(e) => setInputSearch(e.target.value)}
+  />
+</form>
+
       <NavLink to="/" onClick={handleLinkClick} className={({ isActive }) => (isActive ? "active" : "")}>
         Home
       </NavLink>

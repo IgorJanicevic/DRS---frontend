@@ -15,6 +15,7 @@ import {
 } from './components/ProtectRoutes';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { socket } from './socket';
+import { SearchedUsers } from "./pages/SearchedUsers";
 
 const router = createBrowserRouter([
   { path: '/login', element: <LoginPage /> },
@@ -35,7 +36,14 @@ const router = createBrowserRouter([
     element: <ProtectedRouteForAdmin />,
     children: [{ path: '/admin', element: <AdminHomePage /> }],
   },
-]);
+
+  {
+    path: "/search-results",
+    element: <SearchedUsers />,
+  }
+  
+])
+
 
 function App() {
 
