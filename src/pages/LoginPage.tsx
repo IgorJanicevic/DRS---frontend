@@ -4,6 +4,7 @@ import { loginUser } from "../services/authService";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { CustomJwtPayload } from "../components/ProtectRoutes";
+import React from "react";
 
 
 
@@ -18,7 +19,7 @@ export const LoginPage = () => {
         const token = await loginUser(username,password);
         localStorage.setItem('token',token);
         setError(false);
-        let role =null;
+        let role ="";
         if (token) {
             const decodedToken = jwtDecode<CustomJwtPayload>(token); 
             role= decodedToken.role;

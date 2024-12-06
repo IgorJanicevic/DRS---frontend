@@ -1,3 +1,5 @@
+import React from "react";
+
 export const HomeRightSide = () => {
     return (
       <div className="right-side">

@@ -16,6 +16,7 @@ import {
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { socket } from './socket';
 import { SearchedUsers } from "./pages/SearchedUsers";
+import React from 'react';
 
 const router = createBrowserRouter([
   { path: '/login', element: <LoginPage /> },

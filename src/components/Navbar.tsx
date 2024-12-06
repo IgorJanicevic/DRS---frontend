@@ -4,13 +4,14 @@ import "../assets/Navbar.css";
 import { CustomJwtPayload } from "./ProtectRoutes";
 import { Notifications } from "./Notifications";
 import { useState } from "react";
+import React from "react";
 
 
 
 export const Navbar = () => {
   const navigate = useNavigate();
   const [inputSearch,setInputSearch] = useState('');
-  let userRole = null;
+  let userRole = "";
   const token = localStorage.getItem("token");
 
   if (token) {

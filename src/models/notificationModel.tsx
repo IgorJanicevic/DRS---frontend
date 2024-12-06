@@ -11,6 +11,6 @@ export interface NotificationModel {
     friendship_id?: string; 
     post_id?: string;       
     username?: string;        
-    [key: string]: any;   
+    [key: string]: any;
   }
   

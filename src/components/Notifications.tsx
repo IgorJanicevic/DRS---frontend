@@ -7,6 +7,7 @@ import { DecodeToken } from "./ProtectRoutes";
 import { updatePost } from "../services/postService";
 import { EditPostPopup } from "./EditPostPopup";
 import { acceptFriendship, rejectFriendship } from "../services/friendshipService";
+import React from "react";
 
 export const Notifications = () => {
   const [notifications, setNotifications] = useState<NotificationModel[]>([]);
