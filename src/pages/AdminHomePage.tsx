@@ -4,14 +4,7 @@ import { AdminNavbar } from "../components/AdminNavbar";
 import { AdminProfilePage } from "./AdminProfilePage";
 import { AdminBlockedUserPage } from "./AdminBlockedUserPage";
 import { AdminPostPage } from "./AdminPostsPage";
-import { CreateUserPage } from "./CreateUserPage";
 import { AdminCreateUserPage } from "./AdminCreateUserPage";
-<<<<<<< Updated upstream
-=======
-import { io, Socket } from "socket.io-client";
-import { DecodeToken } from "../components/ProtectRoutes";
-import React from "react";
->>>>>>> Stashed changes
 
 export const AdminHomePage = () => {
   const [selectedPage, setSelectedPage] = useState<string>("");

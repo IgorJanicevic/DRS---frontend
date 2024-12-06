@@ -5,6 +5,10 @@
     justify-content: flex-end;
     align-items: center;
     height: auto;
+    background-size: cover; /* Slika se pokriva celom površinom */
+    background-position: center; /* Postavi sliku u centar */
+    background-repeat: no-repeat; /* Ne ponavlja sliku */
+    height: 100vh;
   }
 
   
@@ -15,8 +19,8 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.251);
     max-width: 400px;
     width: 100%;
-    
-    height: 71.2vh;
+    position:fixed;
+    height: 71.3vh;
   }
 
   .register-form{

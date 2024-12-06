@@ -47,58 +47,49 @@ export const Navbar = () => {
   
 
   return (
-    <nav className="navbar">
-      <img
-        src="https://media-cdn.incrowdsports.com/23610a1b-1c2e-4d2a-8fe4-ac2f8e400632.svg"
-        alt="Logo"
-        style={{ height: "25px", width: "auto", margin: "0px", padding: "0px",cursor:"pointer" }}
-        onClick={handleLogoClick}
-      />  
-      <form onSubmit={handleSearchSubmit}>
-  <input
-    type="text"
-    placeholder="Search"
-    className="users-search"
-    style={{ width: "200px" }}
-    value={inputSearch}
-    onChange={(e) => setInputSearch(e.target.value)}
-  />
-</form>
+      <nav className="navbar">
+        <div className="navbar-left">
+          <img
+            src="https://media-cdn.incrowdsports.com/23610a1b-1c2e-4d2a-8fe4-ac2f8e400632.svg"
+            alt="Logo"
+            className="navbar-logo"
+            onClick={handleLogoClick}
+          />
+          <form onSubmit={handleSearchSubmit} className="navbar-search-form">
+            <input
+              type="text"
+              placeholder="Search"
+              className="users-search"
+              value={inputSearch}
+              onChange={(e) => setInputSearch(e.target.value)}
+            />
+          </form>
+          <NavLink to="/" onClick={handleLinkClick} className={({ isActive }) => (isActive ? "active" : "")}>Home</NavLink>
+          <NavLink to="/friends" onClick={handleLinkClick} className={({ isActive }) => (isActive ? "active" : "")}>Friends</NavLink>
+        </div>
 
-      <NavLink to="/" onClick={handleLinkClick} className={({ isActive }) => (isActive ? "active" : "")}>
-        Home
-      </NavLink>
-      <NavLink to="/friends" onClick={handleLinkClick} className={({ isActive }) => (isActive ? "active" : "")}>
-        Friends
-      </NavLink>
-
-      <div style={{marginLeft:"850px",marginBottom:"3px"}}>
-      <Notifications />
-      </div>
-
-      <div className="hamburger-menu">
-        <input id="menu__toggle" type="checkbox" />
-        <label className="menu__btn" htmlFor="menu__toggle">
-          <span></span>
-        </label>
-        <ul className="menu__box">
-          <li>
-            <NavLink className="menu__item" to="/profile" onClick={handleLinkClick}>
-              Profile
-            </NavLink>
-          </li>
-          <li>
-            <NavLink className="menu__item" to="/settings" onClick={handleLinkClick}>
-              Settings
-            </NavLink>
-          </li>
-          <li>
-            <NavLink className="menu__item" to="/login" onClick={handleLogout}>
-              Logout
-            </NavLink>
-          </li>
-        </ul>
-      </div>
-    </nav>
+        <div className="navbar-right">
+          <Notifications />
+          <div className="hamburger-menu">
+            <input id="menu__toggle" type="checkbox" />
+            <label className="menu__btn" htmlFor="menu__toggle">
+              <span></span>
+              <span></span>
+              <span></span>
+            </label>
+            <ul className="menu__box">
+              <li>
+                <NavLink className="menu__item" to="/profile" onClick={handleLinkClick}>Profile</NavLink>
+              </li>
+              <li>
+                <NavLink className="menu__item" to="/settings" onClick={handleLinkClick}>Settings</NavLink>
+              </li>
+              <li>
+                <NavLink className="menu__item" to="/login" onClick={handleLogout}>Logout</NavLink>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
   );
 };

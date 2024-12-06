@@ -39,8 +39,8 @@ export const AdminNavbar = ({ onSelect }: { onSelect: (page: string) => void }) 
               Profile
             </NavLink>
           </li>
-		  <li>
-			<NavLink onClick={handleLogout} to={"/login"} style={{marginTop:"60vh"}}>
+		  <li className="logout">
+			<NavLink onClick={handleLogout} to={"/login"}>
 			Logout
 			</NavLink>
 		  </li>

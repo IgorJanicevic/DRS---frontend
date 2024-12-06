@@ -1,86 +1,128 @@
-/* General Navbar Styling */
 .navbar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 1rem;
   background: white;
   color: rgb(255, 157, 82);
   box-shadow: rgba(255, 116, 10, 1) 0px 1px 3px -1px;
-  z-index: 1;
+  height: 4vh;
 }
 
-.navbar-item {
-  margin-left: 5px;
-  margin-right: 10px;
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.navbar input[type="text"] {
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.navbar-logo {
+  height: 25px;
+  width: auto;
+  cursor: pointer;
+}
+
+.navbar-search-form {
   margin-left: 1rem;
+}
+
+.users-search {
   padding: 0.5rem;
   border: none;
   border-radius: 4px;
-}
-
-/* Opšti stil za NavLink */
-.navbar a {
-  color:#252525;
-  text-decoration: none; /* Bez podvlačenja */
-  padding: 0.1rem 0.7rem; /* Razmak oko linkova */
-  border-radius: 4px; /* Blago zaobljeni uglovi */
-  transition: background-color 0.3s, transform 0.2s; /* Glatki prelazi */
-}
-
-/* Stil za aktivan NavLink */
-.navbar a.active {
-  color: #fc6e22; /* Žuta boja za aktivne linkove */
-  text-decoration: underline; /* Podvlačenje za aktivni link */
-  transform: scale(1.1); /* Blago povećanje */
-}
-
-/* Hover efekat za NavLink */
-.navbar a:hover {
-  background-color: rgba(255, 255, 255, 0.1); /* Blaga pozadina na hover */
-  transform: scale(1.05); /* Blago povećanje na hover */
-}
-
-
-.users-search {
-  box-shadow: 0 0 0 0.6px #252525; 
-  border-radius: 4px;
+  box-shadow: 0 0 0 0.6px #252525;
   outline: none;
-  transition: border-color 0.3s ease-in-out;
-  position: relative;
   width: 200px;
+  transition: box-shadow 0.3s;
 }
 
 .users-search:focus {
-  border-color: transparent; 
-  animation: border-glow 0.5s ease-in-out;
-  box-shadow: 0 0 0 1px #fc6e22; 
+  box-shadow: 0 0 0 2px #fc6e22;
 }
 
-@keyframes border-glow {
-  0% {
-    box-shadow: 0 0 0 0px #fc6e22;
-  }
-  50% {
-    box-shadow: 0 0 0 5px rgba(255, 165, 0, 0.5); /* Poluprovidna narandžasta */
-  }
-  100% {
-    box-shadow: 0 0 0 2px #fc6e22;
-  }
+.navbar a {
+  color: #252525;
+  text-decoration: none;
+  padding: 0.1rem 0.7rem;
+  border-radius: 4px;
+  transition: background-color 0.3s, transform 0.2s;
 }
+
+.navbar a.active {
+  color: #fc6e22;
+  text-decoration: underline;
+  transform: scale(1.1);
+}
+
+.navbar a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
+}
+
+.hamburger-menu {
+  position: relative;
+  height: 30px;
+}
+
+.hamburger-menu input[type="checkbox"] {
+  display: none;
+}
+
+.hamburger-menu .menu__btn {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.hamburger-menu .menu__btn span {
+  background-color: #fc6e22;
+  height: 1.7px;
+  width: 28px;
+  margin: 4.5px 0px;
+}
+
+.hamburger-menu .menu__box {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: #fff;
+  list-style: none;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 16px;
+}
+
+.hamburger-menu input[type="checkbox"]:checked ~ .menu__box {
+  display: block;
+}
+
+.menu__item {
+  text-decoration: none;
+  color: #fc6e22;
+  padding: 0.5rem 0;
+  display: block;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.menu__item:hover {
+  background: #f46b45;
+  transform: scale(1.05);
+}
+
+
 
 
 .notification-bell {
-  position: relative;
-  left: 63%;
   cursor: pointer;
   font-size: 24px;
-  margin-left: 20px;
   height: 24px;
   width: 30px;
-  margin-right: 120px;
 }
 
 .unread-count {
@@ -129,7 +171,7 @@
 }
 
 .notification-dropdown li.unread {
-  background-color: #f0f8ff; /* Plava pozadina za nepročitane */
+  background-color: #f0f8ff; 
   font-weight: bold;
 }
 
@@ -141,7 +183,7 @@
 .notification-buttons {
   display: flex;
   width: 70px;
-  flex-direction: column; /* Dugmići jedan ispod drugog */
+  flex-direction: column; 
   gap: 10px;
   margin-top: 8px;
 }
@@ -173,75 +215,5 @@
   text-align: center;
   color: #777;
 }
-
-
-
-
-
-/* Hamburger Menu Styling */
-.hamburger-menu {
-  margin-left: auto;
-  position: relative;
-  margin-bottom: 15px;
-}
-
-.hamburger-menu input[type="checkbox"] {
-  display: none;
-}
-
-.hamburger-menu .menu__btn {
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
-}
-
-.hamburger-menu .menu__btn span,
-.hamburger-menu .menu__btn span:before,
-.hamburger-menu .menu__btn span:after {
-  content: "";
-  display: block;
-  background-color: #fc6e22;
-  height: 2px;
-  width: 28px;
-  margin: 7px 0px;
-}
-
-.hamburger-menu .menu__box {
-  display: none;
-  color: #252525;
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: #fff;
-  list-style: none;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: rgba(0, 0, 0, 0.2) 0px 8px 16px;
-}
-
-.hamburger-menu input[type="checkbox"]:checked ~ .menu__box {
-  display: block;
-}
-
-.menu__item {
-  text-decoration: none;
-  color: #fc6e22;
-  padding: 0.5rem 0;
-  display: block;
-  transition: background 0.3s, transform 0.2s;
-}
-
-.menu__item:hover {
-  background: #f46b45;
-  color: #fc6e22;
-  transform: scale(1.05);
-}
-
-/* Active Link Styling */
-.menu__item.active {
-  color: #fc6e22;
-  text-decoration: underline;
-}
-
 
 

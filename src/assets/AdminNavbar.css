@@ -84,3 +84,9 @@
     }
   }
   
+
+  #colorlib-main-menu ul li.logout {
+    position: absolute;
+    bottom: 30px; 
+    width: 100%;
+  }

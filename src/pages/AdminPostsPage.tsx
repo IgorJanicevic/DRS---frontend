@@ -47,8 +47,8 @@ export const AdminPostPage = () => {
     fetchAllPosts();
   
     const onNewPost = (newPost: Post) => {
-      setPosts((prevPosts) => [...prevPosts, newPost]);
       console.log('Dobio je post: ', socket.id, newPost.description);
+      setPosts((prevPosts) => [...prevPosts, newPost]);
     };
   
     socket.on('new_post', onNewPost);
