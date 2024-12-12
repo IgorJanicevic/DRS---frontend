@@ -1,7 +1,7 @@
 import { jwtDecode } from "jwt-decode";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../assets/Navbar.css";
-import { CustomJwtPayload } from "./ProtectRoutes";
+import { CustomJwtPayload, DecodeToken } from "./ProtectRoutes";
 import { Notifications } from "./Notifications";
 import { useState } from "react";
 import React from "react";
@@ -11,13 +11,8 @@ import React from "react";
 export const Navbar = () => {
   const navigate = useNavigate();
   const [inputSearch,setInputSearch] = useState('');
-  let userRole = "";
-  const token = localStorage.getItem("token");
-
-  if (token) {
-    const decodedToken = jwtDecode<CustomJwtPayload>(token); // Dekodiranje tokena
-    userRole = decodedToken.role; // Dobavljanje role korisnika
-  }
+  const decoded = DecodeToken();
+  
 
   
 
@@ -79,7 +74,8 @@ export const Navbar = () => {
             </label>
             <ul className="menu__box">
               <li>
-                <NavLink className="menu__item" to="/profile" onClick={handleLinkClick}>Profile</NavLink>
+              <NavLink
+              className="menu__item" to={`/profile/${decoded?.sub}`} onClick={handleLinkClick}>Profile</NavLink>
               </li>
               <li>
                 <NavLink className="menu__item" to="/settings" onClick={handleLinkClick}>Settings</NavLink>

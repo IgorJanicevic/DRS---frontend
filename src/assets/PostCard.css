@@ -14,16 +14,16 @@
     justify-content: space-between;
     margin-bottom: 10px;
     font-size: 0.9rem;
-    color: #666;
   }
   
   .post-user-id {
     font-weight: bold;
-    color: #333;
+    margin-left: 1%;
   }
   
   .post-timestamp {
-    color: #999;
+    color: #787878;
+    font-weight: lighter;
   }
   
   .post-image img {
@@ -33,17 +33,10 @@
     margin-top: 10px;
   }
   
-  .post-description {
-    font-size: 1rem;
-    color: #444;
-    margin: 15px 0;
-  }
-  
   .post-footer {
     display: flex;
     justify-content: space-between;
     font-size: 0.9rem;
-    color: #666;
   }
   
   .post-status {
@@ -71,39 +64,13 @@
   .post-type {
     font-style: italic;
   }
+
+  .post-description {
+    font-size: 1rem;
+    margin: 15px 0;
+    padding-left: 1%;
+    padding-right: 1%;
+  }
   
 
-
-  .accept-button,
-.reject-button {
-  padding: 8px 15px;
-  border-radius: 5px;
-  border: none;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.accept-button {
-  background-color: #4caf50;
-  color: white;
-}
-
-.accept-button:hover {
-  background-color: #45a049;
-}
-
-.reject-button {
-  background-color: #f44336;
-  color: white;
-}
-
-.reject-button:hover {
-  background-color: #e41f1f;
-}
-
-.accept-button:disabled,
-.reject-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
+  

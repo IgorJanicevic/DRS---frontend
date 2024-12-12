@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "../assets/SearchedUsers.css";
 import { Navbar } from "../components/Navbar";
 import { HomeLeftSide } from "../components/HomeLeftSide";
@@ -9,6 +9,11 @@ export const SearchedUsers = () => {
   const [users, setUsers] = useState([]);
   const [error, setError] = useState("");
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const NavigateToProfile= (userId:any)=> {
+     navigate(`/profile/${userId}`)
+  }
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -53,8 +58,8 @@ export const SearchedUsers = () => {
           ) : (
             <div className="user-cards-container">
               {users.map((user: any) => (
-                <div className="user-card" key={user._id}>
-                  <div className="user-card-info">
+                <div className="user-card" key={user._id} onClick={() => NavigateToProfile(user._id)}>
+                <div className="user-card-info">
                     <h3>{user.first_name} {user.last_name}</h3>
                     <p><strong>Username:</strong> {user.username}</p>
                     <p><strong>Email:</strong> {user.email}</p>

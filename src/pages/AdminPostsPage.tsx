@@ -2,15 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { PostCard } from '../components/PostCard';
 import { Post } from '../models/postModel';
 import '../assets/PostCard.css';
+import '../assets/AdminPosts.css';
 import {
   getAllPendingPosts,
   acceptPost,
   rejectPost,
 } from '../services/postService';
-import { socket } from '../socket';
+import { io } from 'socket.io-client';
+import { DecodeToken } from '../components/ProtectRoutes';
 
 export const AdminPostPage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const decoded = DecodeToken();
 
   const fetchAllPosts = async () => {
     try {
@@ -43,27 +46,35 @@ export const AdminPostPage = () => {
     }
   };
 
+  const onNewPost = (newPost: Post) => {
+    console.log('Uslo u adminpost new post');
+    setPosts((prevPosts) => [...prevPosts, newPost]);
+  };
+
   useEffect(() => {
     fetchAllPosts();
-  
-    const onNewPost = (newPost: Post) => {
-      console.log('Dobio je post: ', socket.id, newPost.description);
-      setPosts((prevPosts) => [...prevPosts, newPost]);
-    };
-  
-    socket.on('new_post', onNewPost);
-  
+
+    const socket = io('http://localhost:5000', {
+      transports: ['websocket'],
+      query: {user_id: decoded?.sub, role: decoded?.role}
+    });
+    
+    socket.on('new_post', (newPost: Post) => {
+      console.log('Primljena nova objava:', newPost);
+      onNewPost(newPost);
+    });
+
     return () => {
-      socket.off('new_post', onNewPost);
-      console.log('Odvezao se new_post: ', socket.id);
+      socket.off('new_post');
+      socket.disconnect();
     };
   }, []);
-  
 
   return (
     <div className="admin-post-page">
-      <h1>Admin Panel</h1>
       <div className="posts-container">
+      <h1>Pending Posts</h1>
+
         {posts.length > 0 ? (
           posts.map((post) => (
             <div key={post._id} className="post-item">
@@ -85,7 +96,7 @@ export const AdminPostPage = () => {
             </div>
           ))
         ) : (
-          <p>No new posts.</p>
+          <p style={{marginLeft:'32%'}}>No new posts.</p>
         )}
       </div>
     </div>

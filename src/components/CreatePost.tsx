@@ -70,11 +70,25 @@ export const CreatePost = () => {
     }
   };
 
+  //Dodato za drugaciji nacin
+  //Valjda je ovo potrebno da se ubacuje negde u doker
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const fileReader = new FileReader();
+      fileReader.onload = () => {
+        if(fileReader.result!=null)
+        setPreviewImage(fileReader.result as string);
+      };
+      fileReader.readAsDataURL(e.target.files[0]);
+    }
+  };
+
+
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setSelectedImage(file);
-      setPreviewImage(URL.createObjectURL(file)); // Generisanje URL-a za pregled slike
+      setPreviewImage(URL.createObjectURL(file)); 
     }
   };
 
@@ -106,7 +120,7 @@ export const CreatePost = () => {
         <input
           type="file"
           accept="image/*"
-          onChange={handleImageChange}
+          onChange={handleFileChange}
           disabled={isPosting}
         />
         {previewImage && (
@@ -116,7 +130,7 @@ export const CreatePost = () => {
         )}
       </div>
       <button
-      //style={{backgroundImage:"url(https://cdn.leonardo.ai/users/a1057d29-236f-4cfa-b60c-66c4061fd2fd/generations/b160ee39-9819-4411-9382-4229113f32c8/Leonardo_Phoenix_A_dramatic_cinematic_photograph_serving_as_a_1.jpg)"}}
+        // style={{backgroundImage:"url(https://cdn.leonardo.ai/users/a1057d29-236f-4cfa-b60c-66c4061fd2fd/generations/b160ee39-9819-4411-9382-4229113f32c8/Leonardo_Phoenix_A_dramatic_cinematic_photograph_serving_as_a_1.jpg)"}}
         className="post-button"
         onClick={handlePost}
         disabled={isPosting}

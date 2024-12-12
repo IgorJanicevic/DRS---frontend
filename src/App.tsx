@@ -1,6 +1,6 @@
 import './App.css';
 import './index.css';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { LoginPage } from './pages/LoginPage';
 import { HomePage } from './pages/HomePage';
@@ -14,9 +14,9 @@ import {
   ProtectedRouteForAdmin,
 } from './components/ProtectRoutes';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
-import { socket } from './socket';
 import { SearchedUsers } from "./pages/SearchedUsers";
 import React from 'react';
+import { SocketProvider, useSocket } from './socket';
 
 const router = createBrowserRouter([
   { path: '/login', element: <LoginPage /> },
@@ -28,26 +28,27 @@ const router = createBrowserRouter([
   { path: '/create', element: <CreateUserPage /> },
   { path: '/privacy-policy', element: <PrivacyPolicyPage /> },
   {
-    path: '/profile',
-    element: <ProtectedRouteForCommon />,
-    children: [{ path: '/profile', element: <ProfilePage /> }],
-  },
+    path: '/profile/:userId', 
+    element: <ProtectedRouteForCommon />, 
+    children: [
+      {
+        path: '', 
+        element: <ProfilePage />
+      }
+    ]
+  },  
   {
     path: '/admin',
     element: <ProtectedRouteForAdmin />,
     children: [{ path: '/admin', element: <AdminHomePage /> }],
   },
-
   {
     path: "/search-results",
     element: <SearchedUsers />,
   }
-  
-])
-
+]);
 
 function App() {
-
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -59,21 +60,15 @@ function App() {
         localStorage.clear();
         console.log('Token has expired. LocalStorage cleared.');
       }
-    }
+    }   
 
-     if (!socket.connected) {
-       socket.connect();
-       console.log('Povezao se: ',socket.id);
-     }
-    
-  
-     return () => {
-       socket.disconnect();
-       console.log('Odvezao se: ',socket.id);
-     };
-  },[]);
+  }, []);
 
-  return <RouterProvider router={router} />;
+  return (
+    <SocketProvider>
+      <RouterProvider router={router} />
+    </SocketProvider>
+  );
 }
 
 export default App;

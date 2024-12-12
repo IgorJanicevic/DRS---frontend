@@ -32,11 +32,12 @@
 .main-content {
   flex-grow: 1; /* Zauzima preostali prostor */
   max-width: 700px; /* Fiksna širina */
-  height: calc(90vh - 60px); /* Visina s obzirom na ekran */
+  height: calc(95vh - 60px); /* Visina s obzirom na ekran */
   padding: 20px;
   background-color: transparent;
   border-radius: 8px;
   overflow-y: auto; /* Skrolovanje za sadržaj */
+  margin-top: 1.4px;
 }
 
 .post-card {
