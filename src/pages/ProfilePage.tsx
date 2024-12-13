@@ -8,6 +8,7 @@ import { GetUserPosts } from "../services/postService";
 import { Post } from "../models/postModel";
 import { EditProfile } from "../components/EditProfile";  // Pretpostavljam da si već napravio ovu komponentu
 import { Navbar } from "../components/Navbar";
+import { createFriendship, doesFriendshipExist } from "../services/friendshipService";
 
 export const ProfilePage = () => {
   const { userId: urlUserId } = useParams<{ userId: string }>(); // Dobijanje user_id sa URL-a
@@ -15,6 +16,8 @@ export const ProfilePage = () => {
   const [userPosts, setUserPosts] = useState<Post[]>([]);
   const [loadingPosts, setLoadingPosts] = useState<boolean>(true);
   const [isEditing, setIsEditing] = useState<boolean>(false);
+  const [friendshipStatus, setFriendshipStatus] = useState<any>(null);
+
 
   const token = localStorage.getItem("token");
   const decodedToken = token ? jwtDecode<CustomJwtPayload>(token) : null;
@@ -24,8 +27,18 @@ export const ProfilePage = () => {
     if (urlUserId) {
       fetchUserProfile(urlUserId);
       fetchUserPosts(urlUserId);
+    
     }
   }, [urlUserId]);
+
+  useEffect(() => {
+    const checkFriendshipStatus = async () => {
+      const status = await doesFriendshipExist(currentUserId, urlUserId);
+      setFriendshipStatus(status);
+    };
+
+    checkFriendshipStatus();
+  }, [currentUserId, urlUserId]);
 
   const fetchUserProfile = async (user_id: string) => {
     try {
@@ -52,6 +65,35 @@ export const ProfilePage = () => {
     setIsEditing(true); // Otvoriće EditProfile komponentu
   };
 
+  const handleAddFriend = async () => {
+    if (currentUserId && urlUserId) {
+      try {
+        const response = await createFriendship(currentUserId, urlUserId);
+  
+          setFriendshipStatus("ISentRequest");
+        
+      } catch (error) {
+        console.error("Error sending friend request:", error);
+      }
+    }
+  };
+  
+
+  const handleRemoveFriend = () => {
+    // Logika za uklanjanje prijatelja
+    console.log('Removing friend...');
+  };
+
+  const handleCancelRequest = () => {
+    // Logika za otkazivanje zahteva za prijateljstvo
+    console.log('Cancelling friend request...');
+  };
+
+  const handleAcceptRequest = () => {
+    // Logika za prihvatanje zahteva za prijateljstvo
+    console.log('Accepting friend request...');
+  };
+
   return (<><div className="profile-page">
     <Navbar />
     <div className="profile-container">
@@ -75,17 +117,31 @@ export const ProfilePage = () => {
                 </div>
               </div>
               <div>
-                {/* Prikazivanje dugmeta za izmenu ako je user_id u URL-u isti kao u tokenu */}
-                {currentUserId === urlUserId && !isEditing && (
+              {currentUserId === urlUserId ? (
                   <button className="edit-profile-btn" onClick={handleEditProfile}>
                     Edit Profile
+                  </button>         
+                ) : friendshipStatus === 'Accepted' ? (
+                  <button className="edit-profile-btn" onClick={handleRemoveFriend}>
+                    Remove
                   </button>
-                )}
+                ) : friendshipStatus === 'ISentRequest' ? (
+                  <button className="edit-profile-btn" onClick={handleCancelRequest}>
+                    Cancel Request
+                  </button>
+                ) : friendshipStatus === 'Pending' ? (
+                  <button className="edit-profile-btn" onClick={handleAcceptRequest}>
+                    Accept Friend Request
+                  </button>
+                ) : (
+                  <button className="edit-profile-btn" onClick={handleAddFriend}>
+                    Add Friend
+                  </button>
+                  )}
               </div>
             </div>
           
 
-            {/* Komponenta za izmenu profila */}
             {isEditing && <EditProfile />}
           </>
         ) : (
@@ -99,7 +155,7 @@ export const ProfilePage = () => {
         ) : userPosts.length > 0 ? (
           userPosts.map((post) => <PostCard key={post._id} post={post}/>)
         ) : (
-          <p>No posts available.</p>
+          <h1 style={{marginLeft:"36%", marginTop:"20%", color:"#333"}}>No posts yet.</h1>
         )}
       </div>
     </div>

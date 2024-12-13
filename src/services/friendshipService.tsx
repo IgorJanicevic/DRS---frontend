@@ -43,3 +43,47 @@ export const acceptFriendship = async (friendship_id: string): Promise<string> =
     }
   };
   
+
+  export const doesFriendshipExist = async (myId: any, userId: any): Promise<string> => {
+    try {
+      const response = await fetch(`http://localhost:5000/friendship/status/${myId}/${userId}`,{
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      const data = await response.json();
+      return data.message;
+    } catch (error) {
+      console.error("Error checking friendship status:", error);
+      return 'None';
+    }
+  };
+
+  export const createFriendship = async (myId: string, userId: string): Promise<string> => {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/friendship/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: myId,
+          friend_id: userId
+        }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to create friendship');
+      }
+  
+      const data = await response.json();
+      return data.message || 'Friendship request sent';
+    } catch (error) {
+      console.error('Error creating friendship:', error);
+      throw new Error('Error creating friendship');
+    }
+  };
+  
+  
+  

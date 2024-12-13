@@ -8,6 +8,7 @@
   background-color: #fff;
 }
 
+
 /* Profile details section */
 .profile-details {
   text-align: left;
@@ -53,6 +54,7 @@
   font-weight: 600;
   color: #333;
   margin-bottom: 5px;
+  margin-left: 0px;
 }
 
 /* Name and city */
@@ -68,7 +70,7 @@
   padding: 8px 16px;
   font-size: 16px;
   color: #fff;
-  background-color: #007BFF;
+  background-color: #fc6e22;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -76,7 +78,7 @@
 }
 
 .edit-profile-btn:hover {
-  background-color: #0056b3;
+  background-color: #e8590c;
 }
 
 /* Section for user posts */
