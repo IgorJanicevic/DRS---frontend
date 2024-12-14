@@ -15,15 +15,22 @@ export const AdminPostPage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const decoded = DecodeToken();
 
+  // Fetch all posts from the backend
   const fetchAllPosts = async () => {
     try {
       const allPosts = await getAllPendingPosts();
-      setPosts(allPosts);
+      // Sort posts by timestamp in descending order
+      const sortedPosts = allPosts.sort((a, b) => {
+        // Assuming timestamp is in ISO 8601 format or a valid date string
+        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+      });
+      setPosts(sortedPosts);
     } catch (error) {
       console.error('Error fetching posts:', error);
     }
   };
 
+  // Handle accepting a post
   const handleAccept = async (postId: string) => {
     try {
       await acceptPost(postId);
@@ -35,6 +42,7 @@ export const AdminPostPage = () => {
     }
   };
 
+  // Handle rejecting a post
   const handleReject = async (postId: string) => {
     try {
       await rejectPost(postId);
@@ -46,19 +54,29 @@ export const AdminPostPage = () => {
     }
   };
 
+  // Add new post to the list of posts
   const onNewPost = (newPost: Post) => {
     console.log('Uslo u adminpost new post');
-    setPosts((prevPosts) => [...prevPosts, newPost]);
+    setPosts((prevPosts) => {
+      const updatedPosts = [...prevPosts, newPost];
+      // Sort the updated posts list
+      return updatedPosts.sort((a, b) => {
+        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
+      });
+    });
   };
 
+  // Set up the socket connection
   useEffect(() => {
     fetchAllPosts();
 
     const socket = io('http://localhost:5000', {
       transports: ['websocket'],
-      query: {user_id: decoded?.sub, role: decoded?.role}
+      query: { user_id: decoded?.sub, role: decoded?.role },
     });
-    
+    console.log('Socket connected');
+
+
     socket.on('new_post', (newPost: Post) => {
       console.log('Primljena nova objava:', newPost);
       onNewPost(newPost);
@@ -67,13 +85,14 @@ export const AdminPostPage = () => {
     return () => {
       socket.off('new_post');
       socket.disconnect();
+      console.log('Disconnected');
     };
   }, []);
 
   return (
     <div className="admin-post-page">
       <div className="posts-container">
-      <h1>Pending Posts</h1>
+        <h1>Pending Posts</h1>
 
         {posts.length > 0 ? (
           posts.map((post) => (
@@ -96,7 +115,7 @@ export const AdminPostPage = () => {
             </div>
           ))
         ) : (
-          <p style={{marginLeft:'32%'}}>No new posts.</p>
+          <p style={{ marginLeft: '32%' }}>No new posts.</p>
         )}
       </div>
     </div>

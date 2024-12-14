@@ -53,7 +53,7 @@ export const acceptFriendship = async (friendship_id: string): Promise<string> =
         }
       });
       const data = await response.json();
-      return data.message;
+        return data.message;
     } catch (error) {
       console.error("Error checking friendship status:", error);
       return 'None';

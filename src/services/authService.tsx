@@ -1,4 +1,4 @@
-import {UserRegister} from "../models/userModel"
+import {UserProfile, UserRegister} from "../models/userModel"
 
 export const loginUser = async(username:string,password:string):Promise<string>=>{
     const response = await fetch('http://127.0.0.1:5000/user/login',{
@@ -39,7 +39,7 @@ export const registerUser= async(user:UserRegister | undefined):Promise<string>=
 }
 
 
-export const getUserProfile= async(id:string):Promise<UserRegister>=>{
+export const getUserProfile= async(id:string):Promise<UserProfile>=>{
     const token = localStorage.getItem('token');
     const response = await fetch(`http://localhost:5000/user/${id}`,{
         method:'GET',
@@ -56,7 +56,7 @@ export const getUserProfile= async(id:string):Promise<UserRegister>=>{
     return await response.json();
 }
 
-export const updateUserProfile= async(user_id:string,userData:UserRegister):Promise<string>=>{
+export const updateUserProfile= async(user_id:string,userData:UserRegister | any):Promise<string>=>{
     const token = localStorage.getItem('token');
     const response = await fetch(`http://localhost:5000/user/${user_id}`,
         {

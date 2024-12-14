@@ -3,6 +3,7 @@
   flex-direction: column;
   background-color: white;
   height: 100vh; /* Zauzima celu visinu ekrana */
+  overflow: hidden;
 }
 
 .home-layout {

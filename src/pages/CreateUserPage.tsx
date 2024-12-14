@@ -15,6 +15,7 @@ export const CreateUserPage = () => {
   const [address, setAddress] = useState('');
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
+  const [profile_img, setProfile] = useState('default');
 
   const register = async () => {
     try {

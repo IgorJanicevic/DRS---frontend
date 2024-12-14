@@ -46,9 +46,9 @@ export const HomePage: React.FC = () => {
   return (<>
     <div className="home-page">
       <Navbar />
-      <div className="home-layout">
+      <div className="home-layout" >
 
-      <div className="left-side">
+      <div className="left-side" >
         <HomeLeftSide />
       </div>
 
@@ -64,7 +64,7 @@ export const HomePage: React.FC = () => {
           )}
         </div>
 
-        <div className="right-side">
+        <div className="right-side" style={{marginTop:"1.4px"}}>
           <HomeRightSide />
         </div>
       </div>

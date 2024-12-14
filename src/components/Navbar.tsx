@@ -74,8 +74,7 @@ export const Navbar = () => {
             </label>
             <ul className="menu__box">
               <li>
-              <NavLink
-              className="menu__item" to={`/profile/${decoded?.sub}`} onClick={handleLinkClick}>Profile</NavLink>
+              <NavLink className="menu__item" to={`/profile/${decoded?.sub}`} onClick={handleLinkClick}>Profile</NavLink>
               </li>
               <li>
                 <NavLink className="menu__item" to="/settings" onClick={handleLinkClick}>Settings</NavLink>
