@@ -195,3 +195,25 @@
   background-color: #fc6e22cb;
   cursor: pointer;
 }
+
+
+
+.suggested-friends-list {
+  max-height: 120px; /* Dovoljno za 2 prijatelja */
+  overflow-y: auto; /* Omogućava vertikalno skrolovanje */
+  padding: 5px;
+  scrollbar-width: none; /* Tanja skrol traka za moderne browsere */
+}
+
+.suggested-friends-list::-webkit-scrollbar {
+  width: 6px; /* Širina skrol trake u WebKit browserima */
+}
+
+.suggested-friends-list::-webkit-scrollbar-thumb {
+  background-color: #ddd;
+  border-radius: 4px;
+}
+
+.suggested-friends-list::-webkit-scrollbar-thumb:hover {
+  background-color: #aaa;
+}

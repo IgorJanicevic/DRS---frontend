@@ -1,3 +1,4 @@
+import { UserProfile } from "../models/userModel";
 
 
 
@@ -84,6 +85,28 @@ export const acceptFriendship = async (friendship_id: string): Promise<string> =
       throw new Error('Error creating friendship');
     }
   };
+
+
+export const getSuggestedFriends = async (my_id:string): Promise<UserProfile[]> => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/user/suggested/${my_id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to create friendship');
+      }
+  
+      return await response.json();
+    } catch (error) {
+      console.error('Error creating friendship:', error);
+      throw new Error('Error creating friendship');
+    }
+};
+
   
   
   
