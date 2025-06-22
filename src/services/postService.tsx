@@ -1,9 +1,10 @@
 import { Post,PostCreate} from "../models/postModel";
+import { BACKEND_URL } from "./serviceUtils";
 
 
 export const getPostForEdit = async(post_id:string):Promise<Post> => {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://127.0.0.1:5000/post/${post_id}`,{
+    const response = await fetch(`${BACKEND_URL}/post/${post_id}`,{
         method:'GET',
         headers:{
             'Authorization':token+'',
@@ -19,7 +20,7 @@ export const getPostForEdit = async(post_id:string):Promise<Post> => {
 
 export const updatePost = async(post_id:string,post:any):Promise<Post> => {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:5000/post/${post_id}`, {
+    const response = await fetch(`${BACKEND_URL}/post/${post_id}`, {
         method: 'PUT',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -35,7 +36,7 @@ export const updatePost = async(post_id:string,post:any):Promise<Post> => {
 
 export const GetFriendsPosts= async(user_id:string):Promise<Post[]>=>{
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://127.0.0.1:5000/post/friends/${user_id}`,{
+    const response = await fetch(`${BACKEND_URL}/post/friends/${user_id}`,{
         method:'GET',
         headers:{
             'Authorization':token+'',

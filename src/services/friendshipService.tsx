@@ -1,10 +1,11 @@
 import { UserProfile } from "../models/userModel";
+import { BACKEND_URL } from "./serviceUtils";
 
 
 
 export const acceptFriendship = async (friendship_id: string): Promise<string> => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/friendship/${friendship_id}/accept`, {
+      const response = await fetch(`${BACKEND_URL}/friendship/${friendship_id}/accept`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -25,7 +26,7 @@ export const acceptFriendship = async (friendship_id: string): Promise<string> =
   
   export const rejectFriendship = async (friendship_id: string): Promise<string> => {
     try {
-        const response = await fetch(`http://localhost:5000/friendship/${friendship_id}/reject`, {
+        const response = await fetch(`${BACKEND_URL}/friendship/${friendship_id}/reject`, {
             method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -47,7 +48,7 @@ export const acceptFriendship = async (friendship_id: string): Promise<string> =
 
   export const doesFriendshipExist = async (myId: any, userId: any): Promise<string> => {
     try {
-      const response = await fetch(`http://localhost:5000/friendship/status/${myId}/${userId}`,{
+      const response = await fetch(`${BACKEND_URL}/friendship/status/${myId}/${userId}`,{
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -63,7 +64,7 @@ export const acceptFriendship = async (friendship_id: string): Promise<string> =
 
   export const createFriendship = async (myId: string, userId: string): Promise<string> => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/friendship/', {
+      const response = await fetch('${BACKEND_URL}/friendship/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -89,7 +90,7 @@ export const acceptFriendship = async (friendship_id: string): Promise<string> =
 
 export const getSuggestedFriends = async (my_id:string): Promise<UserProfile[]> => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/user/suggested/${my_id}`, {
+      const response = await fetch(`${BACKEND_URL}/user/suggested/${my_id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

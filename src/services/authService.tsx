@@ -1,7 +1,8 @@
 import {UserProfile, UserRegister} from "../models/userModel"
+import { BACKEND_URL } from "./serviceUtils";
 
 export const loginUser = async(username:string,password:string):Promise<string>=>{
-    const response = await fetch('http://127.0.0.1:5000/user/login',{
+    const response = await fetch(`${BACKEND_URL}/user/login`,{
         method: 'POST',
         headers:{
             'Content-Type': 'application/json',
@@ -20,7 +21,7 @@ export const loginUser = async(username:string,password:string):Promise<string>=
 }
 
 export const registerUser= async(user:UserRegister | undefined):Promise<string>=>{
-    const response = await fetch('http://localhost:5000/user/register',{
+    const response = await fetch(`${BACKEND_URL}/user/register`,{
         method:'POST',
         headers:{
             'Content-Type': 'application/json',
@@ -41,7 +42,7 @@ export const registerUser= async(user:UserRegister | undefined):Promise<string>=
 
 export const getUserProfile= async(id:string):Promise<UserProfile>=>{
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:5000/user/${id}`,{
+    const response = await fetch(`${BACKEND_URL}/user/${id}`,{
         method:'GET',
         headers:{
             'Authorization': token + '',
@@ -58,7 +59,7 @@ export const getUserProfile= async(id:string):Promise<UserProfile>=>{
 
 export const updateUserProfile= async(user_id:string,userData:UserRegister | any):Promise<string>=>{
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:5000/user/${user_id}`,
+    const response = await fetch(`${BACKEND_URL}/user/${user_id}`,
         {
             method:'PUT',
             headers:{

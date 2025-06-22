@@ -1,0 +1,1 @@
+export const BACKEND_URL = 'https://drs-backend-90lz.onrender.com';
