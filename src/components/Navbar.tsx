@@ -1,4 +1,3 @@
-import { jwtDecode } from "jwt-decode";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../assets/Navbar.css";
 import { CustomJwtPayload, DecodeToken } from "./ProtectRoutes";
