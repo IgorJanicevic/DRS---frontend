@@ -53,7 +53,7 @@ export const GetFriendsPosts= async(user_id:string):Promise<Post[]>=>{
 
 export const getAllPendingPosts= async():Promise<Post[]>=>{
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:5000/post/pending`,{
+    const response = await fetch(`${BACKEND_URL}/post/pending`,{
         method:'GET',
         headers:{
             'Authorization':token+'',
@@ -71,7 +71,7 @@ export const getAllPendingPosts= async():Promise<Post[]>=>{
 
 export const GetUserPosts= async(user_id:string):Promise<Post[]>=>{
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:5000/post/user/${user_id}`,{
+    const response = await fetch(`${BACKEND_URL}/post/user/${user_id}`,{
         method:'GET',
         headers:{
             'Authorization':token+'',
@@ -87,7 +87,7 @@ export const GetUserPosts= async(user_id:string):Promise<Post[]>=>{
 
 export const createPost= async(data:PostCreate)=>{
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:5000/post/create`,{
+    const response = await fetch(`${BACKEND_URL}/post/create`,{
         method:'POST',
         headers:{
             'Authorization':token+'',
@@ -105,7 +105,7 @@ export const createPost= async(data:PostCreate)=>{
 
 export const acceptPost = async (postId: string): Promise<any> => {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:5000/post/accept/${postId}`, {
+    const response = await fetch(`${BACKEND_URL}/post/accept/${postId}`, {
         method: 'PUT',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -121,7 +121,7 @@ export const acceptPost = async (postId: string): Promise<any> => {
 
 export const rejectPost = async (postId: string): Promise<any> => {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:5000/post/reject/${postId}`, {
+    const response = await fetch(`${BACKEND_URL}/post/reject/${postId}`, {
         method: 'PUT',
         headers: {
             'Authorization': `Bearer ${token}`,

@@ -64,7 +64,7 @@ export const acceptFriendship = async (friendship_id: string): Promise<string> =
 
   export const createFriendship = async (myId: string, userId: string): Promise<string> => {
     try {
-      const response = await fetch('${BACKEND_URL}/friendship/', {
+      const response = await fetch(`${BACKEND_URL}/friendship/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

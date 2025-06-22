@@ -1,8 +1,9 @@
 import { stringify } from "querystring";
 import { DecodeToken } from "../components/ProtectRoutes";
 import { NotificationModel } from "../models/notificationModel";
+import { BACKEND_URL } from "./serviceUtils";
 
-const API_BASE_URL = "http://localhost:5000/notification";
+const API_BASE_URL = `${BACKEND_URL}/notification`;
 
 export const getUserNotifications = async (): Promise<NotificationModel[]> => {
   try {
@@ -10,7 +11,7 @@ export const getUserNotifications = async (): Promise<NotificationModel[]> => {
     const response = await fetch(`${API_BASE_URL}/user/${decoded?.sub}`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`, // Ako je potrebna autorizacija
+        Authorization: `Bearer ${localStorage.getItem("token")}`, 
       },
     });
     if (!response.ok) throw new Error("Failed to fetch notifications");
