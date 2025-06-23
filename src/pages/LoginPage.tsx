@@ -63,7 +63,7 @@ export const LoginPage = () => {
               id="username"
               name="username"
               className="login-input"
-              placeholder="username"
+              placeholder="Username"
               value={username}
               onChange={(event)=>setUsername(event.target.value)}
               required

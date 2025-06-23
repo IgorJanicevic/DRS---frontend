@@ -97,7 +97,7 @@ export const createPost= async(data:PostCreate)=>{
     })
 
     if(!response.ok){
-        throw new Error('errror');
+        throw new Error('Error while creating post');
     }
     return response.json();
 }

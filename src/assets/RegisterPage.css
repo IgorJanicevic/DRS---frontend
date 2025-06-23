@@ -4,7 +4,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    height: auto;
+    height: 100%;
     background-size: cover; /* Slika se pokriva celom površinom */
     background-position: center; /* Postavi sliku u centar */
     background-repeat: no-repeat; /* Ne ponavlja sliku */
@@ -20,7 +20,7 @@
     max-width: 400px;
     width: 100%;
     position:fixed;
-    height: 71.3vh;
+    height: 72%
   }
 
   .register-form{
@@ -61,8 +61,6 @@
   .register-input {
     width: 150%;
     padding: 10px;
-    border: 0px;
-    background-color: rgb(212, 210, 210);
     border-radius: 7px;
     font-size: 1rem;
   }
