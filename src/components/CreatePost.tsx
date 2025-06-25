@@ -14,7 +14,7 @@ export const CreatePost = () => {
   const [isPosting, setIsPosting] = useState<boolean>(false);
 
   const handlePost = async () => {
-    if (!description.trim() && !selectedImage) {
+    if (!description.trim() && !previewImage) {
       alert("Description or an image is required!");
       return;
     }
@@ -70,8 +70,6 @@ export const CreatePost = () => {
     }
   };
 
-  //Dodato za drugaciji nacin
-  //Valjda je ovo potrebno da se ubacuje negde u doker
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const fileReader = new FileReader();

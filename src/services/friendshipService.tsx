@@ -23,6 +23,46 @@ export const acceptFriendship = async (friendship_id: string): Promise<string> =
       throw new Error('Error accepting friendship');
     }
   };
+
+  export const getFriendshipId = async (myId: string, userId: string): Promise<string> => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/friendship/${myId}/${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to get friendship ID');
+      }
+  
+      const data = await response.json();
+      return data.message;
+    } catch (error) {
+      console.error('Error getting friendship ID:', error);
+      throw new Error('Error getting friendship ID');
+    }
+  }
+
+  export const cancelFriendship = async (friendship_id: string): Promise<void> => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/friendship/${friendship_id}/cancel`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to cancel friendship');
+      }
+
+    } catch (error) {
+      console.error('Error cancelling friendship:', error);
+      throw new Error('Error cancelling friendship');
+    }
+  }
   
   export const rejectFriendship = async (friendship_id: string): Promise<string> => {
     try {

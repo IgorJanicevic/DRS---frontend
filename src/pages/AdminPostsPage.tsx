@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { PostCard } from '../components/PostCard';
 import { Post } from '../models/postModel';
 import '../assets/PostCard.css';
@@ -8,20 +8,18 @@ import {
   acceptPost,
   rejectPost,
 } from '../services/postService';
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 import { DecodeToken } from '../components/ProtectRoutes';
 
 export const AdminPostPage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const socketRef = useRef<Socket | null>(null);
   const decoded = DecodeToken();
 
-  // Fetch all posts from the backend
   const fetchAllPosts = async () => {
     try {
       const allPosts = await getAllPendingPosts();
-      // Sort posts by timestamp in descending order
       const sortedPosts = allPosts.sort((a, b) => {
-        // Assuming timestamp is in ISO 8601 format or a valid date string
         return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
       });
       setPosts(sortedPosts);
@@ -30,85 +28,84 @@ export const AdminPostPage = () => {
     }
   };
 
-  // Handle accepting a post
   const handleAccept = async (postId: string) => {
     try {
       await acceptPost(postId);
-      setPosts((prevPosts) =>
-        prevPosts.filter((post) => post._id !== postId)
-      );
+      setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
     } catch (error) {
       console.error('Error accepting post:', error);
     }
   };
 
-  // Handle rejecting a post
   const handleReject = async (postId: string) => {
     try {
       await rejectPost(postId);
-      setPosts((prevPosts) =>
-        prevPosts.filter((post) => post._id !== postId)
-      );
+      setPosts((prevPosts) => prevPosts.filter((post) => post._id !== postId));
     } catch (error) {
       console.error('Error rejecting post:', error);
     }
   };
 
-  // Add new post to the list of posts
   const onNewPost = (newPost: Post) => {
-    console.log('Uslo u adminpost new post');
+    console.log('Got new post:', {newPost});
+
+    if (!newPost.timestamp) {
+      newPost.timestamp = new Date().toISOString();
+    }
+
     setPosts((prevPosts) => {
       const updatedPosts = [...prevPosts, newPost];
-      // Sort the updated posts list
       return updatedPosts.sort((a, b) => {
         return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
       });
     });
+
+    fetchAllPosts();
   };
 
-  // Set up the socket connection
   useEffect(() => {
     fetchAllPosts();
 
-    const socket = io('http://localhost:5000', {
+    socketRef.current = io('http://localhost:5000', {
       transports: ['websocket'],
       query: { user_id: decoded?.sub, role: decoded?.role },
     });
-    console.log('Socket connected');
 
-
-    socket.on('new_post', (newPost: Post) => {
-      console.log('Primljena nova objava:', newPost);
-      onNewPost(newPost);
+    socketRef.current.on('connect', () => {
+      console.log('Socket connected');
     });
 
+   
+
     return () => {
-      socket.off('new_post');
-      socket.disconnect();
-      console.log('Disconnected');
+      if (socketRef.current) {
+        socketRef.current.off('new_post');
+        socketRef.current.disconnect();
+        console.log('Socket cleanup complete');
+      }
     };
   }, []);
+
+  useEffect(() => {
+   socketRef.current?.on('new_post', (newPost: Post) => {
+      onNewPost(newPost);
+    });
+  }, [socketRef]);
+
 
   return (
     <div className="admin-post-page">
       <div className="posts-container">
         <h1>Pending Posts</h1>
-
         {posts.length > 0 ? (
           posts.map((post) => (
             <div key={post._id} className="post-item">
               <PostCard post={post} />
               <div className="post-actions">
-                <button
-                  className="accept-button"
-                  onClick={() => handleAccept(post._id)}
-                >
+                <button className="accept-button" onClick={() => handleAccept(post._id)}>
                   Accept
                 </button>
-                <button
-                  className="reject-button"
-                  onClick={() => handleReject(post._id)}
-                >
+                <button className="reject-button" onClick={() => handleReject(post._id)}>
                   Reject
                 </button>
               </div>

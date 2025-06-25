@@ -4,7 +4,6 @@ import { loginUser } from "../services/authService";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { CustomJwtPayload } from "../components/ProtectRoutes";
-import React from "react";
 
 
 
@@ -13,45 +12,36 @@ export const LoginPage = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const login = async ()=>{
-        try{
-        const token = await loginUser(username,password);
-        localStorage.setItem('token',token);
-        setError(false);
-        let role ="";
-        if (token) {
-            const decodedToken = jwtDecode<CustomJwtPayload>(token); 
-            role= decodedToken.role;
-            if(role==='admin'){
-              navigate('/admin');
-            }else{
-              navigate('/');
-            }
-            
-        }
-        }catch(error){
-            setPassword('');
-            setError(true);
-        }
+
+   const login = async () => {
+  setIsLoading(true);
+  try {
+    const token = await loginUser(username, password);
+    localStorage.setItem('token', token);
+    setError(false);
+    let role = "";
+    if (token) {
+      const decodedToken = jwtDecode<CustomJwtPayload>(token);
+      role = decodedToken.role;
+      if (role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
     }
-
-    
-
-    
-    
-
-
+  } catch (error) {
+    setPassword('');
+    setError(true);
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <>
     <div className="register-container">
-      
-      <div className="text-overlay">
-          {/* <h1>Take a look on ducina mama fotke!</h1>
-          <p>hello frine</p> */}
-      </div>
-
       <div className="register-right">
         <form className="login-form" style={{padding:"50px"}}>
           <h1 className="login-title">Welcome!</h1>
@@ -82,7 +72,9 @@ export const LoginPage = () => {
               required
             />
           </div>
-          <button type="button" onClick={login} className="login-button">Login</button>
+          <button type="button" onClick={login} className="login-button" disabled={isLoading}>
+            {isLoading ? 'Logging in...' : 'Login'}
+          </button>
           <p className="login-register-link">
             Don't have an account? <a href="/create" className="login-link">Register here</a>
           </p>

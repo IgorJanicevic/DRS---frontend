@@ -57,6 +57,20 @@ export const getUserProfile= async(id:string):Promise<UserProfile>=>{
     return await response.json();
 }
 
+export const getUserByUsername= async(username:string):Promise<UserProfile>=>{
+    const response = await fetch(`${BACKEND_URL}/user/username/${username}`,{
+        method:'GET',
+        headers:{
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if(!response.ok){
+        throw new Error("Error with profile");
+    }
+    return await response.json();
+}
+
 export const updateUserProfile= async(user_id:string,userData:UserRegister | any):Promise<string>=>{
     const token = localStorage.getItem('token');
     const response = await fetch(`${BACKEND_URL}/user/${user_id}`,

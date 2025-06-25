@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import "../assets/EditPostPopup.css";
 import { getPostForEdit } from '../services/postService';
+import { Post } from '../models/postModel';
 
 interface EditPostPopupProps {
   postId: string;
@@ -13,11 +14,13 @@ export const EditPostPopup: React.FC<EditPostPopupProps> = ({ postId, onClose, o
   const [post, setPost] = useState<{ description: string; image_url?: string ; status: string}>({ description: '', image_url: undefined, status: "Pending" });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [fetchPost, setFetchPost] = useState<Post>();
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const fetchedPost = await getPostForEdit(postId);
+        setFetchPost(fetchedPost);
         setPost({ description: fetchedPost.description, image_url: fetchedPost.image_url,status:"Pending" });
         setLoading(false);
       } catch (err) {
@@ -29,7 +32,9 @@ export const EditPostPopup: React.FC<EditPostPopupProps> = ({ postId, onClose, o
   }, [postId]);
 
   const handleSave = () => {
-    onSave(post);
+    if(fetchPost?.description !== post.description || fetchPost?.image_url !== post.image_url) {
+      onSave(post);
+    }
     onClose();
   };
 

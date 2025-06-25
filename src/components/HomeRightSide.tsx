@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { UserProfile } from "../models/userModel";
 import { DecodeToken } from "./ProtectRoutes";
 import { getSuggestedFriends } from "../services/friendshipService";
+import { get } from "http";
+import { getUserByUsername } from "../services/authService";
 
 export const HomeRightSide = () => {
     const [suggestedFriends, setSuggestedFriends] = useState<UserProfile[]>([]);
@@ -15,6 +17,17 @@ export const HomeRightSide = () => {
             } catch (error) {
                 console.error("Error fetching suggested friends:", error);
             }
+        }
+    };
+
+    const onSuggestedFriend = async (username:string) => {
+        var friend = await getUserByUsername(username);
+        console.log("Friend:", friend);
+
+        if (friend) {
+            window.location.href = `/profile/${friend._id}`;
+        } else {
+            console.error("Friend not found");
         }
     };
 
@@ -51,7 +64,7 @@ export const HomeRightSide = () => {
                 <h4>Suggested Friends</h4>
                 <ul className="suggested-friends-list">
                     {suggestedFriends.map((friend) => (
-                        <li key={friend.username}>
+                        <li key={friend.username} onClick={() =>onSuggestedFriend(friend.username)} className="suggested-friend-item">
                             <img
                                 src={friend.profile_img || "https://via.placeholder.com/150"}
                                 alt={friend.username}

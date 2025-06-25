@@ -3,22 +3,24 @@ import { useParams } from "react-router-dom";
 import { getUserProfile, updateUserProfile } from "../services/authService";
 import { jwtDecode } from "jwt-decode";
 import { CustomJwtPayload } from "../components/ProtectRoutes";
-import { PostCard } from "../components/PostCard";
 import { GetUserPosts, updatePost } from "../services/postService";
 import { Post } from "../models/postModel";
-import { EditProfile } from "../components/EditProfile";  // Pretpostavljam da si već napravio ovu komponentu
+import { EditProfile } from "../components/EditProfile"; 
 import { Navbar } from "../components/Navbar";
-import { createFriendship, doesFriendshipExist } from "../services/friendshipService";
-import { isEditable } from "@testing-library/user-event/dist/utils";
+import { cancelFriendship, createFriendship, doesFriendshipExist, getFriendshipId } from "../services/friendshipService";
+import { ProfilePostCard } from "../components/ProfilePostCard";
+import "../assets/ProfilePage.css"; 
+import { EditPostPopup } from "../components/EditPostPopup";
 
 export const ProfilePage = () => {
-  const { userId: urlUserId } = useParams<{ userId: string }>(); // Dobijanje user_id sa URL-a
+  const { userId: urlUserId } = useParams<{ userId: string }>();
   const [userProfile, setUserProfile] = useState<any>(null);
   const [userPosts, setUserPosts] = useState<Post[]>([]);
   const [loadingPosts, setLoadingPosts] = useState<boolean>(true);
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const [friendshipStatus, setFriendshipStatus] = useState<any>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [editingPostId, setEditingPostId] = useState<string | null>(null);
   
 
 
@@ -38,6 +40,9 @@ export const ProfilePage = () => {
     const checkFriendshipStatus = async () => {
       const status = await doesFriendshipExist(currentUserId, urlUserId);
       setFriendshipStatus(status);
+         if(currentUserId === urlUserId){
+        setFriendshipStatus('Accepted');
+      }
     };
 
     checkFriendshipStatus();
@@ -87,14 +92,20 @@ export const ProfilePage = () => {
   };
   
 
-  const handleRemoveFriend = () => {
-    // Logika za uklanjanje prijatelja
-    console.log('Removing friend...');
+  const handleRemoveFriend =async () => {
+    if(currentUserId && urlUserId){
+      var friendshipId = await getFriendshipId(currentUserId, urlUserId);
+      cancelFriendship(friendshipId);
+      setFriendshipStatus(null);
+    }
   };
 
-  const handleCancelRequest = () => {
-    // Logika za otkazivanje zahteva za prijateljstvo
-    console.log('Cancelling friend request...');
+  const handleCancelRequest = async() => {
+    if(currentUserId && urlUserId){
+      var friendshipId = await getFriendshipId(currentUserId, urlUserId);
+      cancelFriendship(friendshipId);
+      setFriendshipStatus(null);
+    }
   };
 
   const handleAcceptRequest = () => {
@@ -122,6 +133,37 @@ export const ProfilePage = () => {
       fileReader.readAsDataURL(e.target.files[0]);
     }
   };
+
+  const handleEditPost =async (postId: string) => {
+    setEditingPostId(postId);
+  };
+
+  useEffect(() => {urlUserId ? fetchUserPosts(urlUserId) : console.log()}, [editingPostId]);
+
+const handleDeletePost = async (postId: string) => {
+  const confirmDelete = window.confirm("Da li si siguran da želiš da obrišeš ovu objavu?");
+  if (confirmDelete) {
+    try {
+      await updatePost(postId, { status: "deleted" });
+      const refreshedPosts = userPosts.filter(p => p._id !== postId);
+      setUserPosts(refreshedPosts);
+    } catch (error) {
+      console.error("Greška pri brisanju posta:", error);
+      alert("Nešto nije u redu.");
+    }
+  }
+};
+
+ const handlePostSave = (updatedPostData: { description: string; image_url?: string; status:string}) => {
+
+    if(editingPostId){
+      updatedPostData.status = "Accepted";
+      updatePost(editingPostId,updatedPostData);
+    }
+    setEditingPostId(null);
+    alert('Post updated successfully');
+  };
+
 
   return (<><div className="profile-page">
     <Navbar />
@@ -187,16 +229,30 @@ export const ProfilePage = () => {
         )}
       </div>
 
-      <div className="user-posts">
-        {loadingPosts ? (
-          <p>Loading posts...</p>
-        ) : userPosts.length > 0 ? (
-          userPosts.map((post) => <PostCard key={post._id} post={post}/>)
-        ) : (
-          <h1 style={{marginLeft:"36%", marginTop:"20%", color:"#333"}}>No posts yet.</h1>
-        )}
-      </div>
+    <div className="user-posts grid grid-cols-4 gap-6 px-6 py-8">
+      {loadingPosts ? (
+        <p>Loading posts...</p>
+      ) : userPosts.length > 0 && friendshipStatus == 'Accepted' ? (
+        userPosts.map((post) => (
+          <div style={{padding:'15px'}}><ProfilePostCard
+            key={post._id}
+            post={post}
+            onEdit={handleEditPost}
+            onDelete={handleDeletePost}
+          /></div>
+          
+        ))
+      ) : (
+          friendshipStatus === 'Accepted' ? ( 
+          <h1 style={{ marginLeft: "39%", marginTop: "10%", color: "#333" }}>No posts yet.</h1>
+        ):(
+          <h1 style={{ marginLeft: "39%", marginTop: "10%", color: "#333" }}>This profile is private.</h1>
+      ))}
     </div>
+    </div>
+     {editingPostId && (
+      <EditPostPopup postId={editingPostId} onClose={()=>setEditingPostId(null)} onSave={handlePostSave} ></EditPostPopup>)
+      }
     </div>
     </>
   );

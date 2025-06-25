@@ -1,7 +1,6 @@
 /* General profile container */
 .profile-container {
-  width: 100%;
-  max-width: 900px;
+  width: 90%;
   margin: 0 auto;
   margin-top: 1%;
   padding: 20px;
@@ -83,9 +82,12 @@
 
 /* Section for user posts */
 .user-posts {
-  margin-left: 6%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 250px));
+  gap: 10px;
   margin-top: 40px;
 }
+
 
 .user-posts h2 {
   font-size: 20px;
