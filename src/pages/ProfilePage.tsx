@@ -229,27 +229,32 @@ const handleDeletePost = async (postId: string) => {
         )}
       </div>
 
-    <div className="user-posts grid grid-cols-4 gap-6 px-6 py-8">
-      {loadingPosts ? (
-        <p>Loading posts...</p>
-      ) : userPosts.length > 0 && friendshipStatus == 'Accepted' ? (
-        userPosts.map((post) => (
-          <div style={{padding:'15px'}}><ProfilePostCard
-            key={post._id}
-            post={post}
-            onEdit={handleEditPost}
-            onDelete={handleDeletePost}
-            editPosts={currentUserId === urlUserId}
-          /></div>
-          
-        ))
-      ) : (
-          friendshipStatus === 'Accepted' ? ( 
-          <h1 style={{ marginLeft: "39%", marginTop: "10%", color: "#333" }}>No posts yet.</h1>
-        ):(
-          <h1 style={{ marginLeft: "39%", marginTop: "10%", color: "#333" }}>This profile is private.</h1>
-      ))}
-    </div>
+     {loadingPosts ? (
+  <p>Loading posts...</p>
+) : friendshipStatus === 'Accepted' ? (
+          userPosts.length > 0 ? (
+            <div className="user-posts grid grid-cols-4 gap-6 px-6 py-8">
+              {userPosts.map((post) => (
+                <div key={post._id} style={{ padding: '15px' }}>
+                  <ProfilePostCard
+                    post={post}
+                    onEdit={handleEditPost}
+                    onDelete={handleDeletePost}
+                    editPosts={currentUserId === urlUserId}
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+              <h1 style={{ marginLeft: "39%", marginTop: "10%" }}>
+                No posts yet.
+              </h1>
+          )
+        ) : (
+            <h1 style={{ marginLeft: "39%", marginTop: "10%" }}>
+              This profile is private.
+            </h1>
+        )}
     </div>
      {editingPostId && (
       <EditPostPopup postId={editingPostId} onClose={()=>setEditingPostId(null)} onSave={handlePostSave} ></EditPostPopup>)

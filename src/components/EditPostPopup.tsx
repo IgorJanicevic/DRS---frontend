@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import "../assets/EditPostPopup.css";
 import { getPostForEdit } from '../services/postService';
 import { Post } from '../models/postModel';
+import { Loader } from './Loader';
 
 interface EditPostPopupProps {
   postId: string;
@@ -49,7 +50,7 @@ export const EditPostPopup: React.FC<EditPostPopupProps> = ({ postId, onClose, o
     }
   };
 
-  if (loading) return ReactDOM.createPortal(<div className="popup">Loading...</div>, document.body);
+  if (loading) return ReactDOM.createPortal(<Loader/>, document.body);
   if (error) {
     return ReactDOM.createPortal(
       <div className="error-popup">

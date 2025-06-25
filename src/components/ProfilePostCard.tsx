@@ -45,13 +45,15 @@ export const ProfilePostCard: React.FC<Props> = ({ post, onEdit, onDelete,editPo
         </>
         
       )}
-      <IconButton
+      
+     {editPosts && 
+     <IconButton
         sx={{ position: 'absolute', top: 8, right: 8, backgroundColor: 'rgba(0,0,0,0.5)', color: 'white' }}
         onClick={handleMenuOpen}
       >
         <MoreVertIcon />
       </IconButton>
-     {editPosts && <Menu
+     && <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
