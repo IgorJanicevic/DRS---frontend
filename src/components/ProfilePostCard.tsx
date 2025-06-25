@@ -29,7 +29,7 @@ export const ProfilePostCard: React.FC<Props> = ({ post, onEdit, onDelete }) => 
   };
 
   return (
-    <Card sx={{ width: '100%', aspectRatio: '1 / 1', position: 'relative' }}>
+    <Card sx={{ width: '250px', aspectRatio: '1 / 1', position: 'relative' }}>
       {post.image_url && (
         <>
         <CardMedia
