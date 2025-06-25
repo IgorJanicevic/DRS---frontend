@@ -239,6 +239,7 @@ const handleDeletePost = async (postId: string) => {
             post={post}
             onEdit={handleEditPost}
             onDelete={handleDeletePost}
+            editPosts={currentUserId === urlUserId}
           /></div>
           
         ))

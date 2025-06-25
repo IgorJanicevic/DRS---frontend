@@ -15,9 +15,10 @@ interface Props {
   post: Post;
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
+  editPosts?: boolean;
 }
 
-export const ProfilePostCard: React.FC<Props> = ({ post, onEdit, onDelete }) => {
+export const ProfilePostCard: React.FC<Props> = ({ post, onEdit, onDelete,editPosts }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -50,7 +51,7 @@ export const ProfilePostCard: React.FC<Props> = ({ post, onEdit, onDelete }) => 
       >
         <MoreVertIcon />
       </IconButton>
-      <Menu
+     {editPosts && <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
@@ -72,7 +73,7 @@ export const ProfilePostCard: React.FC<Props> = ({ post, onEdit, onDelete }) => 
         >
           Delete
         </MenuItem>
-      </Menu>
+      </Menu>}
     </Card>
   );
 };
