@@ -9,6 +9,7 @@ import React from "react";
 import { GetUserPosts } from "../services/postService";
 import { Post } from "../models/postModel";
 import { PostCard } from "../components/PostCard";
+import { Loader } from "./Loader";
 
 export const EditProfile = () => {
   const [userProfile, setUserProfile] = useState<UserRegister | null>(null);
@@ -192,7 +193,7 @@ export const EditProfile = () => {
             </div>
           </>
         ) : (
-          <p>Loading user profile...</p>
+          <Loader/>
         )}
       </div>
     </>

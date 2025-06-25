@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { registerUser } from "../services/authService";
 import { UserRegister } from "../models/userModel";
 import "../assets/RegisterPage.css"
+import { Loader } from "../components/Loader";
 
 export const AdminCreateUserPage = () => {
   const [formData, setFormData] = useState<UserRegister>({

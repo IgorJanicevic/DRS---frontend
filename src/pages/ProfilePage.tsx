@@ -11,6 +11,7 @@ import { cancelFriendship, createFriendship, doesFriendshipExist, getFriendshipI
 import { ProfilePostCard } from "../components/ProfilePostCard";
 import "../assets/ProfilePage.css"; 
 import { EditPostPopup } from "../components/EditPostPopup";
+import { Loader } from "../components/Loader";
 
 export const ProfilePage = () => {
   const { userId: urlUserId } = useParams<{ userId: string }>();
@@ -225,13 +226,13 @@ const handleDeletePost = async (postId: string) => {
             {isEditing && <EditProfile />}
           </>
         ) : (
-          <p>Loading user profile...</p>
+         <Loader />
         )}
       </div>
 
      {loadingPosts ? (
-  <p>Loading posts...</p>
-) : friendshipStatus === 'Accepted' ? (
+        <Loader />
+      ) : friendshipStatus === 'Accepted' ? (
           userPosts.length > 0 ? (
             <div className="user-posts grid grid-cols-4 gap-6 px-6 py-8">
               {userPosts.map((post) => (
