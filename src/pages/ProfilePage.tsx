@@ -5,7 +5,7 @@ import { jwtDecode } from "jwt-decode";
 import { CustomJwtPayload } from "../components/ProtectRoutes";
 import { GetUserPosts, updatePost } from "../services/postService";
 import { Post } from "../models/postModel";
-import { EditProfile } from "../components/EditProfile"; 
+import { EditProfileModal } from "../components/EditProfile"; 
 import { Navbar } from "../components/Navbar";
 import { cancelFriendship, createFriendship, doesFriendshipExist, getFriendshipId } from "../services/friendshipService";
 import { ProfilePostCard } from "../components/ProfilePostCard";
@@ -220,10 +220,8 @@ const handleDeletePost = async (postId: string) => {
                   </button>
                   )}
               </div>
-            </div>
-          
-
-            {isEditing && <EditProfile />}
+            </div>   
+          <EditProfileModal onClose={() => setIsEditing(false)} isOpen={isEditing} />
           </>
         ) : (
          <Loader />

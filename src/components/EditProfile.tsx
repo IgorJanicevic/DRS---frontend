@@ -1,41 +1,32 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { UserRegister } from "../models/userModel";
 import { getUserProfile, updateUserProfile } from "../services/authService";
 import { jwtDecode } from "jwt-decode";
-import { Navbar } from "../components/Navbar";
-import { CustomJwtPayload, DecodeToken } from "../components/ProtectRoutes";
 import "../assets/ProfilePage.css";
-import React from "react";
-import { GetUserPosts } from "../services/postService";
-import { Post } from "../models/postModel";
-import { PostCard } from "../components/PostCard";
 import { Loader } from "./Loader";
 
-export const EditProfile = () => {
+interface EditProfileModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export const EditProfileModal: React.FC<EditProfileModalProps> = ({ isOpen, onClose }) => {
   const [userProfile, setUserProfile] = useState<UserRegister | null>(null);
-  const [userId, setUserId] = useState("");
-  const [editing, setEditing] = useState<boolean>(false);
   const [updatedProfile, setUpdatedProfile] = useState<UserRegister | null>(null);
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [userPosts, setUserPosts] = useState<Post[]>([]);
-  const [loadingPosts, setLoadingPosts] = useState<boolean>(true);
+  const [userId, setUserId] = useState("");
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!isOpen) return;
+
     const token = localStorage.getItem("token");
-    let user_id = "";
-
     if (token) {
-      const decodedToken = jwtDecode<CustomJwtPayload>(token);
+      const decodedToken = jwtDecode<{ sub: string }>(token);
       setUserId(decodedToken.sub);
-      user_id = decodedToken.sub;
+      fetchUserProfile(decodedToken.sub);
     }
-
-    if (user_id !== "") {
-      fetchUserProfile(user_id);
-      fetchUserPosts(user_id);
-    }
-  }, []);
+  }, [isOpen]);
 
   const fetchUserProfile = async (user_id: string) => {
     try {
@@ -48,17 +39,6 @@ export const EditProfile = () => {
     }
   };
 
-  const fetchUserPosts = async (user_id: string) => {
-    try {
-      const posts = await GetUserPosts(user_id);
-      setUserPosts(posts);
-      setLoadingPosts(false);
-    } catch (error) {
-      console.error("Error fetching user posts:", error);
-      setLoadingPosts(false);
-    }
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (updatedProfile) {
@@ -68,10 +48,16 @@ export const EditProfile = () => {
 
   const handleSave = async () => {
     if (updatedProfile) {
+      const updatedData = {
+        ...updatedProfile,
+        ...(password && { password }),
+      };
+
       try {
-        await updateUserProfile(userId, updatedProfile);
+        await updateUserProfile(userId, updatedData);
         setUserProfile(updatedProfile);
         alert("Profile updated successfully");
+        onClose();
       } catch (error) {
         console.error("Error updating profile:", error);
         alert("Failed to update profile");
@@ -79,123 +65,173 @@ export const EditProfile = () => {
     }
   };
 
+  const handleOutsideClick = (e: React.MouseEvent) => {
+    if (modalRef.current && e.target === modalRef.current) {
+      onClose();
+    }
+  };
+
+  if (!isOpen) return null;
+
+  const formFields = [
+    { label: "Username", name: "username", type: "text" },
+    { label: "First Name", name: "first_name", type: "text" },
+    { label: "Last Name", name: "last_name", type: "text" },
+    { label: "Email", name: "email", type: "email" },
+    { label: "Mobile", name: "mobile", type: "text" },
+    { label: "Address", name: "address", type: "text" },
+    { label: "City", name: "city", type: "text" },
+    { label: "Country", name: "country", type: "text" },
+  ];
+
   return (
-    <>
-      <div className="edit-profile">
+    <div
+      ref={modalRef}
+      onClick={handleOutsideClick}
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        backgroundColor: "rgba(0, 0, 0, 0.6)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: 9999,
+        backdropFilter: "blur(2px)",
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "#fdfdfd",
+          borderRadius: "20px",
+          width: "90%",
+          maxWidth: "500px",
+          maxHeight: "90vh",
+          overflowY: "auto",
+          scrollbarWidth: "none",       
+          msOverflowStyle: "none",
+          boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+          position: "relative",
+        }}
+      >
+        <button
+          onClick={onClose}
+          style={{
+            position: "absolute",
+            top: "12px",
+            right: "16px",
+            background: "none",
+            border: "none",
+            fontSize: "1.8rem",
+            color: "#999",
+            cursor: "pointer",
+          }}
+        >
+          &times;
+        </button>
+
         {userProfile ? (
           <>
-            <div className="profile-details">
-              <h1>Profile of {userProfile.username}</h1>
-              <div className="form-group">
-                <label>Username</label>
+            <h2
+              style={{
+                textAlign: "center",
+                marginBottom: "1.5rem",
+                color: "#333",
+                fontWeight: 600,
+              }}
+            >
+              Edit Profile
+            </h2>
+
+            {/* Render all fields except password */}
+            {formFields.map((field) => (
+              <div key={field.name} style={{ marginBottom: "16px", marginInline: "5%" }}>
+                <label
+                  htmlFor={field.name}
+                  style={{
+                    display: "block",
+                    marginBottom: "5px",
+                    fontWeight: "500",
+                    color: "#444",
+                  }}
+                >
+                  {field.label}
+                </label>
                 <input
-                  type="text"
-                  name="username"
-                  value={updatedProfile?.username}
+                  type={field.type}
+                  name={field.name}
+                  value={(updatedProfile as any)?.[field.name] || ""}
                   onChange={handleChange}
                   className="form-input"
+                  style={{
+                    width: "100%",
+                    padding: "10px 12px",
+                    fontSize: "0.95rem",
+                    borderRadius: "8px",
+                    border: "1px solid #ccc",
+                    outline: "none",
+                  }}
                 />
               </div>
+            ))}
 
-              <div className="form-group">
-                <label>Password</label>
-                <div className="password-input">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    name="password"
-                    onChange={handleChange}
-                    placeholder="New Password"
-                    className="form-input"
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label>Name</label>
-                <div className="name-inputs">
-                  <input
-                    type="text"
-                    name="first_name"
-                    value={updatedProfile?.first_name}
-                    onChange={handleChange}
-                    placeholder="First Name"
-                    className="form-input"
-                  />
-                  <input
-                    type="text"
-                    name="last_name"
-                    value={updatedProfile?.last_name}
-                    onChange={handleChange}
-                    placeholder="Last Name"
-                    className="form-input"
-                  />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label>Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={updatedProfile?.email}
-                  onChange={handleChange}
-                  className="form-input"
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Mobile</label>
-                <input
-                  type="text"
-                  name="mobile"
-                  value={updatedProfile?.mobile}
-                  onChange={handleChange}
-                  className="form-input"
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Address</label>
-                <input
-                  type="text"
-                  name="address"
-                  value={updatedProfile?.address}
-                  onChange={handleChange}
-                  className="form-input"
-                />
-              </div>
-
-              <div className="form-group">
-                <label>City</label>
-                <input
-                  type="text"
-                  name="city"
-                  value={updatedProfile?.city}
-                  onChange={handleChange}
-                  className="form-input"
-                />
-              </div>
-
-              <div className="form-group">
-                <label>Country</label>
-                <input
-                  type="text"
-                  name="country"
-                  value={updatedProfile?.country}
-                  onChange={handleChange}
-                  className="form-input"
-                />
-              </div>
-
-              <button className="save-button" onClick={handleSave}>
-                Save Changes
-              </button>
+            {/* Password input (handled separately) */}
+            <div style={{ marginBottom: "20px", marginInline: "5%" }}>
+              <label
+                htmlFor="password"
+                style={{
+                  display: "block",
+                  marginBottom: "5px",
+                  fontWeight: "500",
+                  color: "#444",
+                }}
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                name="password"
+                placeholder="New Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="form-input"
+                style={{
+                  width: "100%",
+                  padding: "10px 12px",
+                  fontSize: "0.95rem",
+                  borderRadius: "8px",
+                  border: "1px solid #ccc",
+                  outline: "none",
+                }}
+              />
             </div>
+
+            <button
+              onClick={handleSave}
+              style={{
+                marginBlock: "20px",
+                backgroundColor: "#007bff",
+                color: "#fff",
+                fontWeight: 600,
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer",
+                width: "60%",
+                alignContent: "center",
+                marginLeft: "20%",
+                height: "40px",
+                fontSize: "1rem",
+              }}
+            >
+              Save Changes
+            </button>
           </>
         ) : (
-          <Loader/>
+          <Loader />
         )}
       </div>
-    </>
+    </div>
   );
 };

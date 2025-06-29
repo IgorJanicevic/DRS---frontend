@@ -2,12 +2,9 @@ import { useState, useEffect, useRef, act } from "react";
 import "../assets/Navbar.css";
 import { getUserNotifications, markNotificationsAsRead } from "../services/notificationService";
 import { NotificationModel } from "../models/notificationModel";
-//import { socket } from "../socket";
-import { DecodeToken } from "./ProtectRoutes";
 import { updatePost } from "../services/postService";
 import { EditPostPopup } from "./EditPostPopup";
 import { acceptFriendship, rejectFriendship } from "../services/friendshipService";
-import React from "react";
 
 export const Notifications = () => {
   const [notifications, setNotifications] = useState<NotificationModel[]>([]);
@@ -30,7 +27,7 @@ export const Notifications = () => {
 
   const handleNotificationClick = () => {
     setShowNotifications(!showNotifications);
-    if (!showNotifications && unreadCount !== 0) markNotificationsAsRead(); // Mark as read when opened
+    if (!showNotifications && unreadCount !== 0) markNotificationsAsRead();
   };
 
   const handleOutsideClick = (event: MouseEvent) => {
@@ -43,30 +40,12 @@ export const Notifications = () => {
   useEffect(() => {
     fetchNotifications();
 
-    // Add event listener for outside click
     document.addEventListener("mousedown", handleOutsideClick);
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [unreadCount]);
 
-  useEffect(() => {
-    // socket.on("connect", () => {
-    //   console.log("Konekcija uspostavljena!");
-    // });
-
-    // socket.on("notification", (data: NotificationModel) => {
-    //   console.log("Notifikacija je ucitana");
-    //   alert("GLEDAJ RADI");
-    //   //setNotifications((prevNotifications) => [...prevNotifications, data]);
-    // });
-
-    // // Clean up the socket event listeners when the component is unmounted
-    // return () => {
-    //   socket.off("connect");
-    //   socket.off("notification");
-    // };
-  }, []);
 
   const handleFriendshipAction = async (friendshipId: string | undefined, action: "accept" | "reject") => {
     if (!friendshipId) {
@@ -185,9 +164,7 @@ export const Notifications = () => {
           onClose={handlePopupClose}
           onSave={handlePostSave}
         />
-      )}
-
-        
+      )}  
     </>
   );
 };

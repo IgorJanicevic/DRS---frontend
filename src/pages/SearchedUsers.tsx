@@ -5,7 +5,8 @@ import { Navbar } from "../components/Navbar";
 import { HomeLeftSide } from "../components/HomeLeftSide";
 import { HomeRightSide } from "../components/HomeRightSide";
 import { BACKEND_URL } from "../services/serviceUtils";
-import {Loader} from "../components/Loader";
+import { Loader } from "../components/Loader";
+import { UserCard } from "../components/UserCard";
 
 export const SearchedUsers = () => {
   const [users, setUsers] = useState([]);
@@ -14,9 +15,9 @@ export const SearchedUsers = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  const NavigateToProfile= (userId:any)=> {
-     navigate(`/profile/${userId}`)
-  }
+  const NavigateToProfile = (userId: string) => {
+    navigate(`/profile/${userId}`);
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -42,7 +43,7 @@ export const SearchedUsers = () => {
       } catch (err) {
         setError("An error occurred while fetching search results.");
         setUsers([]);
-      }finally {
+      } finally {
         setIsLoading(false);
       }
     };
@@ -58,34 +59,25 @@ export const SearchedUsers = () => {
           <HomeLeftSide />
         </div>
         <div className="main-content">
-          <h1 style={{marginLeft:'34%'}}>Search Results</h1>
+          <h1 style={{ marginLeft: '34%' }}>Search Results</h1>
           {error ? (
             <p style={{ color: "red" }}>{error}</p>
           ) : (
-           isLoading ? ( <Loader/>
-           ) : (
-            <div className="user-cards-container">
-              {users.map((user: any) => (
-                <div className="user-card" key={user._id} onClick={() => NavigateToProfile(user._id)}>
-                <div className="user-card-info">
-                  <img
-                    src={user.profile_img || "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"}
-                    alt="Profile"
-                    className="profile-img"
-                    style={{width: "100px", height: "100px", borderRadius: "50%"}}
+            isLoading ? (
+              <Loader />
+            ) : (
+              <div className="user-cards-container">
+                {users.map((user: any) => (
+                  <UserCard
+                    key={user._id}
+                    user={user}
+                    onClick={() => NavigateToProfile(user._id)}
+                    showUnblockButton={false}
                   />
-                    <h3>{user.first_name} {user.last_name}</h3>
-                    <p><strong>Username:</strong> {user.username}</p>
-                    <p><strong>Email:</strong> {user.email}</p>
-                    <p><strong>Address:</strong> {user.address || 'N/A'}</p>
-                    <p><strong>City:</strong> {user.city || 'N/A'}</p>
-                    <p><strong>Country:</strong> {user.country || 'N/A'}</p>
-                    <p><strong>Mobile:</strong> {user.mobile || 'N/A'}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ))}
+                ))}
+              </div>
+            )
+          )}
         </div>
         <div className="right-side">
           <HomeRightSide />
