@@ -4,11 +4,10 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    height: 100%;
-    background-size: cover; /* Slika se pokriva celom površinom */
-    background-position: center; /* Postavi sliku u centar */
-    background-repeat: no-repeat; /* Ne ponavlja sliku */
-    height: 100vh;
+    height: 100vh !important;
+    background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat;
   }
 
   
@@ -20,7 +19,7 @@
     max-width: 400px;
     width: 100%;
     position:fixed;
-    height: 72%
+    height: 72% !important;
   }
 
   .register-form{

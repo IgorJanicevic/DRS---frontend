@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { io, Socket } from "socket.io-client";
 import { DecodeToken } from "./components/ProtectRoutes";
+import { BACKEND_URL } from "./services/serviceUtils";
 
 
 interface SocketContextProps {
@@ -18,7 +19,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
   const connectSocket = () => {
     const decode = DecodeToken();
-    const newSocket = io("http://localhost:5000", {
+    const newSocket = io(BACKEND_URL, {
       transports: ["websocket"],
       query: { user_id: decode?.sub, role: decode?.role },
     });

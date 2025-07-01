@@ -1,29 +1,4 @@
-.login-container {
-    display: flex;
-    height: 100dvh;;
-  }
-  
-  .login-left {
-    flex: 1;
-    overflow: hidden;
-  }
-  
-  .login-image {
-    width: 100vh;
-    height: 100vh;
-    object-fit: contain;
-  }
-  
-  .login-right {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #f8f9fa;
-    padding: 20px;
-  }
-  
-  .login-form {
+ .login-form {
     width: 100%;
     max-width: 80%;
     text-align: center;
@@ -108,29 +83,3 @@
   .login-link:hover {
     text-decoration: underline;
   }
-  
-
-  .image-container {
-    position: relative;
-    width: 100%; 
-    max-width: 800px; 
-    margin: 0 auto;
-  }
-  
-  .image {
-    display: block;
-    width: 100%;
-    height: 100vh; 
-  }
-  
-  .text-overlay {
-    position: absolute;
-    top: 20%;
-    left: 20%; 
-    transform: translate(-50%, -50%) rotate(-12deg);
-    color: white; 
-    text-align: center; 
-    padding: 20px;
-    border-radius: 8px; 
-  }
-  
