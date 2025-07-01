@@ -10,6 +10,7 @@ import {
 } from '../services/postService';
 import { io, Socket } from 'socket.io-client';
 import { DecodeToken } from '../components/ProtectRoutes';
+import { BACKEND_URL } from '../services/serviceUtils';
 
 export const AdminPostPage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -66,7 +67,7 @@ export const AdminPostPage = () => {
   useEffect(() => {
     fetchAllPosts();
 
-    socketRef.current = io('http://localhost:5000', {
+    socketRef.current = io(BACKEND_URL, {
       transports: ['websocket'],
       query: { user_id: decoded?.sub, role: decoded?.role },
     });
