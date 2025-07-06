@@ -78,14 +78,21 @@ export const Notifications = () => {
     setSelectedPostId(null);
   };
 
-  const handlePostSave = (updatedPost: { description: string; image_url?: string; status:string}) => {
-    console.log("Updated post:", updatedPost);
+  const handlePostSave = (updatedPost: { description: string; image_url?: string; status: string }) => {
+      console.log("Updated post:", updatedPost);
 
-    if(selectedPostId)
-    updatePost(selectedPostId,updatedPost);
-    handlePopupClose();
-    alert('Post updated successfully');
-  };
+      if (!selectedPostId) return;
+
+      const postWithTimestamp = {
+        ...updatedPost,
+        timestamp: new Date().toISOString(),
+      };
+
+      updatePost(selectedPostId, postWithTimestamp);
+      handlePopupClose();
+      alert('Post updated successfully');
+    };
+
 
 
   return (

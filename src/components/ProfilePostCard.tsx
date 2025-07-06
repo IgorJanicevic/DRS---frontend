@@ -18,9 +18,7 @@ interface Props {
   editPosts?: boolean;
 }
 
-export const ProfilePostCard: React.FC<Props> = ({ post, onEdit, onDelete,editPosts }) => {
-
-  console.log(editPosts);
+export const ProfilePostCard: React.FC<Props> = ({ post, onEdit, onDelete, editPosts }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -32,31 +30,57 @@ export const ProfilePostCard: React.FC<Props> = ({ post, onEdit, onDelete,editPo
   };
 
   return (
-    <Card sx={{ width: '250px', aspectRatio: '1 / 1', position: 'relative' }}>
-      {post.image_url && (
+    <Card sx={{ width: '250px', aspectRatio: '1 / 1', position: 'relative', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      {post.image_url ? (
         <>
-        <CardMedia
-          component="img"
-          height="100%"
-          image={post.image_url}
-          alt="Post"
-          sx={{ objectFit: 'cover', height: '100%' }}
-        />
-        <label style={{ position: 'absolute', bottom: 0, left: 0, color: 'white', backgroundColor: 'rgba(0,0,0,0.5)', padding: '4px',maxHeight: '50px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-          {post.description} </label>
+          <CardMedia
+            component="img"
+            height="100%"
+            image={post.image_url}
+            alt="Post"
+            sx={{ objectFit: 'cover', height: '100%' }}
+          />
+          <label
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              color: 'white',
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              padding: '4px',
+              maxHeight: '50px',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              width: '100%',
+            }}
+          >
+            {post.description}
+          </label>
         </>
-        
+      ) : (
+        <CardContent sx={{ textAlign: 'center' }}>
+          <Typography variant="body2" color="text.secondary">
+            {post.description || 'No description.'}
+          </Typography>
+        </CardContent>
       )}
-      {editPosts &&  <IconButton
-          sx={{ position: 'absolute', top: 8, right: 8, backgroundColor: 'rgba(0,0,0,0.5)', color: 'white' }}
-          onClick={handleMenuOpen}> 
-        <MoreVertIcon />
-      </IconButton>}
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleMenuClose}
-      >
+
+      {editPosts && (
+        <IconButton
+          sx={{
+            position: 'absolute',
+            top: 8,
+            right: 8,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            color: 'white',
+          }}
+          onClick={handleMenuOpen}
+        >
+          <MoreVertIcon />
+        </IconButton>
+      )}
+
+      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
         <MenuItem
           onClick={() => {
             handleMenuClose();

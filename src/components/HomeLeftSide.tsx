@@ -51,10 +51,10 @@ export const HomeLeftSide = () => {
       <div className="links">
         <h4>Useful Links</h4>
         <ul>
-          <li><a href="https://www.linkedin.com/in/igor-janicevic-770075306/">Link 1</a></li>
-          <li><a href="https://www.linkedin.com/in/ivan-dolenac-362734296/">Link 2</a></li>
-          <li><a href="https://www.linkedin.com/in/du%C5%A1an-gordani%C4%87-a29331302/">Link 3</a></li>
-          <li><a href="#">Link 4</a></li>
+          <li><a href="https://www.linkedin.com/in/igor-janicevic-770075306/">Igor Janicevic</a></li>
+          <li><a href="https://www.linkedin.com/in/ivan-dolenac-362734296/">Ivan Dolenac</a></li>
+          <li><a href="https://www.linkedin.com/in/du%C5%A1an-gordani%C4%87-a29331302/">Dusan Gordanic</a></li>
+          <li><a href="https://www.linkedin.com/in/mihailo-stevi%C4%87-620826312/">Mihailo Stevic</a></li>
         </ul>
       </div></>);
 }

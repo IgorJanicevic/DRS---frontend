@@ -15,8 +15,8 @@ export const AdminHomePage = () => {
     switch (selectedPage) {
       case "Register":
         return <AdminCreateUserPage />;
-      case "Profile":
-        return <AdminProfilePage />;
+      // case "Profile":
+      //   return <AdminProfilePage />;
       case "User":
         return <AdminBlockedUserPage />;
       case "Posts":

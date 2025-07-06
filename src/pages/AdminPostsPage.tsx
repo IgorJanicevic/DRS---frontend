@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { PostCard } from '../components/PostCard';
 import { Post } from '../models/postModel';
@@ -17,17 +18,42 @@ export const AdminPostPage = () => {
   const socketRef = useRef<Socket | null>(null);
   const decoded = DecodeToken();
 
-  const fetchAllPosts = async () => {
-    try {
-      const allPosts = await getAllPendingPosts();
-      const sortedPosts = allPosts.sort((a, b) => {
-        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
-      });
-      setPosts(sortedPosts);
-    } catch (error) {
-      console.error('Error fetching posts:', error);
-    }
-  };
+  function formatTimestamp(isoString: string) {
+    const date = new Date(isoString);
+    if (isNaN(date.getTime())) return 'Invalid date';
+
+    return date.toLocaleString('sr-RS', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+  }
+
+ const fetchAllPosts = async () => {
+  try {
+    const allPosts = await getAllPendingPosts();
+
+    const postsWithValidTimestamp = allPosts.map(post => {
+      const timestamp =
+        post.timestamp && !isNaN(new Date(post.timestamp).getTime())
+          ? post.timestamp
+          : new Date().toISOString();
+      return { ...post, timestamp };
+    });
+
+    const sortedPosts = postsWithValidTimestamp.sort(
+      (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    );
+
+    setPosts(sortedPosts);
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+  }
+};
+
 
   const handleAccept = async (postId: string) => {
     try {
@@ -48,51 +74,55 @@ export const AdminPostPage = () => {
   };
 
   const onNewPost = (newPost: Post) => {
-    console.log('Got new post:', {newPost});
+    console.log('Got new post:', { newPost });
 
-    if (!newPost.timestamp) {
-      newPost.timestamp = new Date().toISOString();
-    }
+    const timestamp = newPost.timestamp && !isNaN(new Date(newPost.timestamp).getTime())
+      ? newPost.timestamp
+      : new Date().toISOString();
+
+    const postWithTimestamp = { ...newPost, timestamp };
 
     setPosts((prevPosts) => {
-      const updatedPosts = [...prevPosts, newPost];
-      return updatedPosts.sort((a, b) => {
-        return new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime();
-      });
-    });
+      const exists = prevPosts.find((p) => p._id === postWithTimestamp._id);
 
-    fetchAllPosts();
+      if (exists) {
+        return prevPosts
+          .map((p) => (p._id === postWithTimestamp._id ? postWithTimestamp : p))
+          .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+      } else {
+        return [postWithTimestamp, ...prevPosts].sort((a, b) =>
+          new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+        );
+      }
+    });
   };
 
   useEffect(() => {
     fetchAllPosts();
 
-    socketRef.current = io(BACKEND_URL, {
+    const socket = io(BACKEND_URL, {
       transports: ['websocket'],
       query: { user_id: decoded?.sub, role: decoded?.role },
     });
 
-    socketRef.current.on('connect', () => {
+    socketRef.current = socket;
+
+    socket.on('connect', () => {
       console.log('Socket connected');
     });
 
-   
+    socket.on('new_post', onNewPost);
+
+    socket.on('connect_error', (err) => {
+      console.error('Socket connection error:', err);
+    });
 
     return () => {
-      if (socketRef.current) {
-        socketRef.current.off('new_post');
-        socketRef.current.disconnect();
-        console.log('Socket cleanup complete');
-      }
+      socket.off('new_post', onNewPost);
+      socket.disconnect();
+      console.log('Socket cleanup complete');
     };
   }, []);
-
-  useEffect(() => {
-   socketRef.current?.on('new_post', (newPost: Post) => {
-      onNewPost(newPost);
-    });
-  }, [socketRef]);
-
 
   return (
     <div className="admin-post-page">
@@ -101,14 +131,20 @@ export const AdminPostPage = () => {
         {posts.length > 0 ? (
           posts.map((post) => (
             <div key={post._id} className="post-item">
-              <PostCard post={post} />
-              <div className="post-actions">
+              <PostCard post={{ ...post, timestamp: formatTimestamp(post.timestamp) }} />
+              <div className="post-actions" style={{ marginTop: '8px' }}>
                 <button className="accept-button" onClick={() => handleAccept(post._id)}>
                   Accept
                 </button>
                 <button className="reject-button" onClick={() => handleReject(post._id)}>
                   Reject
                 </button>
+                <div
+                  className="post-timestamp"
+                  style={{ fontSize: '0.85rem', color: '#555', marginTop: '6px' }}
+                >
+                  {formatTimestamp(post.timestamp)}
+                </div>
               </div>
             </div>
           ))

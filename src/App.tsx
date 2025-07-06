@@ -17,6 +17,7 @@ import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { SearchedUsers } from "./pages/SearchedUsers";
 import React from 'react';
 import { SocketProvider, useSocket } from './socket';
+import { NotFoundPage } from './pages/NotFoundPage';
 
 const router = createBrowserRouter([
   { path: '/login', element: <LoginPage /> },
@@ -45,7 +46,11 @@ const router = createBrowserRouter([
   {
     path: "/search-results",
     element: <SearchedUsers />,
-  }
+  },
+{
+  path: '*',
+  element: <NotFoundPage />,
+}
 ]);
 
 function App() {
