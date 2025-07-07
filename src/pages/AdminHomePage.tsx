@@ -30,12 +30,12 @@ export const AdminHomePage = () => {
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>
+      <AdminNavbar onSelect={(page) => setSelectedPage(page)} />
       <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
         rel="stylesheet"
       />
       <div style={{ width: "250px" }}>
-        <AdminNavbar onSelect={(page) => setSelectedPage(page)} />
       </div>
       <div
         style={{
