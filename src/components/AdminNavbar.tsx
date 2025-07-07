@@ -34,11 +34,11 @@ export const AdminNavbar = ({ onSelect }: { onSelect: (page: string) => void }) 
           Blocked
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink to="#"  onClick={()=>{onSelect("Profile");setSelected('Profile')}} className={selected==='Profile' ? 'clicked' : ''}>
               Profile
             </NavLink>
-          </li>
+          </li> */}
 		  <li className="logout">
 			<NavLink onClick={handleLogout} to={"/login"}>
 			Logout
