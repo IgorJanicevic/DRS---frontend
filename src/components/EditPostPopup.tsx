@@ -8,11 +8,11 @@ import { Loader } from './Loader';
 interface EditPostPopupProps {
   postId: string;
   onClose: () => void;
-  onSave: (updatedPost: { description: string; image_url?: string; status: string}) => void;
+  onSave: (updatedPost: { description: string; image_url?: string; status: string }) => void;
 }
 
 export const EditPostPopup: React.FC<EditPostPopupProps> = ({ postId, onClose, onSave }) => {
-  const [post, setPost] = useState<{ description: string; image_url?: string ; status: string}>({ description: '', image_url: undefined, status: "Pending" });
+  const [post, setPost] = useState<{ description: string; image_url?: string; status: string }>({ description: '', image_url: undefined, status: "Pending" });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [fetchPost, setFetchPost] = useState<Post>();
@@ -22,10 +22,12 @@ export const EditPostPopup: React.FC<EditPostPopupProps> = ({ postId, onClose, o
       try {
         const fetchedPost = await getPostForEdit(postId);
         setFetchPost(fetchedPost);
-        setPost({ description: fetchedPost.description, image_url: fetchedPost.image_url,status:"Pending" });
+        setPost({ description: fetchedPost.description, image_url: fetchedPost.image_url, status: "Pending" });
         setLoading(false);
       } catch (err) {
-        setError('Failed to load post data.');
+        if(err instanceof Error) {
+          setError(err.message);}else{
+        setError('Failed to fetch post');}
         setLoading(false);
       }
     };
@@ -33,7 +35,7 @@ export const EditPostPopup: React.FC<EditPostPopupProps> = ({ postId, onClose, o
   }, [postId]);
 
   const handleSave = () => {
-    if(fetchPost?.description !== post.description || fetchPost?.image_url !== post.image_url) {
+    if (fetchPost?.description !== post.description || fetchPost?.image_url !== post.image_url) {
       onSave(post);
     }
     onClose();
@@ -43,14 +45,14 @@ export const EditPostPopup: React.FC<EditPostPopupProps> = ({ postId, onClose, o
     if (e.target.files && e.target.files[0]) {
       const fileReader = new FileReader();
       fileReader.onload = () => {
-        if(fileReader.result!=null)
-        setPost({ ...post, image_url: fileReader.result as string });
+        if (fileReader.result != null)
+          setPost({ ...post, image_url: fileReader.result as string });
       };
       fileReader.readAsDataURL(e.target.files[0]);
     }
   };
 
-  if (loading) return ReactDOM.createPortal(<Loader/>, document.body);
+  if (loading) return ReactDOM.createPortal(<Loader />, document.body);
   if (error) {
     return ReactDOM.createPortal(
       <div className="error-popup">
